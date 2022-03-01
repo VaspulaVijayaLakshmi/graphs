@@ -61,7 +61,7 @@ void bfs(int srcX,int srcY){
 
 vector<vector<bool>> vis(N,vector<bool>(M));
 
-queue<int> q;
+queue<pair<int,int>> q;
 q.push({srcX,srcY});
 
 dis[srcX][srcY]=0;
