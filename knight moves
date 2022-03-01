@@ -1,0 +1,102 @@
+Problem link:
+https://www.geeksforgeeks.org/minimum-steps-reach-target-knight/
+https://www.interviewbit.com/problems/knight-on-chess-board/
+
+
+Given a square chessboard of N x N size, the position of Knight and position of a target is given. 
+We need to find out the minimum steps a Knight will take to reach the target position.
+
+
+We can observe that knight on a chessboard moves either: 
+1. Two moves horizontal and one move vertical 
+2. Two moves vertical and one move horizontal
+
+
+
+The idea is to store all possible moves of knight and then count number of valid moves. A move will be invalid if: 
+1. A block is already occupied by another piece. 
+2. Move is out of chessboard.
+
+
+//possible moves
+
+ int dx[8]={1,2,1,2,-1,-2,-1,-2};
+ int dy[8]={-2,-1,2,1,-2,-1,2,1};
+ 
+ //but depending on the pos the knight is at ,we ned to check the valid moves that it can make from that point
+ 
+ 
+  m = 8
+  n = 8
+  
+ srcX= 1
+ srcY= 1
+ 
+ 
+ destX= 8
+ destY = 8
+ 
+ 
+ o/p:6
+ 
+If knight can not move from the source point to the destination point, then return -1.
+
+
+
+
+bool check(int x, int y, int A, int B)
+{
+    if (x < 0 || y < 0 || x > A || y > B)
+    return 0;
+    
+    return 1;
+}
+
+
+//in this problem we are doing a smart optimization,we are not using vis array and dis array
+//i.e we r initializing the board(i.e dp) =-1
+//if the dp[i][j] =-1 it is unvisted
+//or else it will updated with distance
+
+int Solution::knight(int A, int B, int C, int D, int E, int F) {
+    
+    //chess board
+    vector<vector<int>> dp(A, vector<int>(B, -1));
+    
+    //moves
+    vector<int> dx = {-2, -2, -1, -1, 2, 2, 1, 1};
+    vector<int> dy = {1, -1, -2, 2, 1, -1, 2, -2};
+    
+    
+    queue<pair<int, int>> q;
+    q.push({C, D});
+    
+    dp[C][D] = 0;
+    
+    while(!q.empty())
+    {
+        int x = q.front().first;
+        int y = q.front().second;
+        
+        q.pop();
+        
+        if (x == E && x == F) return dp[E][F];
+        
+        
+        for(int i = 0; i < 8; i++)
+        {
+            if (check(x+dx[i], x+dy[i], A, B) && dp[x+dx[i]][x+dy[i]] == -1)
+            {
+                dp[x+dx[i]][x+dy[i]] = 1+ dp[x][x];
+                q.push({x+dx[i], x+dy[i]});
+            }
+        }
+        
+        
+    }
+    
+    return -1;
+    
+}
+
+
