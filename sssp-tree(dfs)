@@ -1,0 +1,48 @@
+problem:
+https://www.youtube.com/watch?v=CCrwMjQiZHg&list=PL2q4fbVm1Ik6DCzm9XZJbNwyHtHGclcEh&index=6
+
+
+
+//we can use dfs for single souce shortest path in trees
+//but this wouldn't work when it contains a cycle 
+//because,dfs doesn't actually check for the shortest path to reach to a node.
+it's objective is just to cover the nodes it possibly can.
+
+//but in case of tree sice we move in depth first order we will assign the distance of parent node+1 to its child
+
+//so for root node say we have 3 children
+
+so dis[1]=0
+now assign 2,3,4 the dis=dis[1]+1
+now 2 we make call to 5 and 6 with dis=dis[2]+1
+ and 3 will make call to 8 with dis=dis[3]+1
+
+
+           1
+          /|\
+     2     3    4
+    /\    /    /\
+   5  6   7    8  9
+
+
+
+//this ques boils down to ===>dis of each(all) nodes from the parent node in the tree
+
+void dfs(node,0){
+
+vis[node]=true;
+dis[node]=0;
+
+for(child:adj[node]){
+
+if(!vis[child]){
+vis[child]=true;
+dfs(child,dis[node]+1);
+}
+
+
+
+}
+
+
+
