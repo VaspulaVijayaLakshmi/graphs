@@ -36,3 +36,60 @@ if it is not visited,make a  dfs call,it will cover all the VALID CONTINUOS boxe
 and each time we visit such a char "." and it is unvisited ==>it is a new component or new room.
 increment the room count;
 
+
+
+bool isValid(int row,int col,int M,int N){
+
+if(row<0 || row>=N || col<0 || col>=M || grid[row][col]=='#') return false;
+
+if(vis[row][col]) return false;
+
+return true;
+
+}
+
+
+
+int dx={-1,+1,0,0}
+int dy={0,0,-1,+1}
+
+void dfs( row,col,vis){
+
+vis[row][col]=true;
+
+//we need to check the validity of all 4 possibilities
+
+for(int i=0;i<4;i++)
+{
+if(isValid[row+dx[i]][col+dy[i]])
+dfs();
+}
+
+
+
+}
+
+
+
+
+
+
+int m,n,rooms=0;
+
+
+//vis array 
+vector<vector<bool>> vis( n , vector<bool> (m, 0));
+
+for(int int i=0;i<n;i++){
+  for(int j=0;j<m;j++){
+    
+    
+    if(grid[i][j]=='.' && !vis[i][j]){
+       rooms++;
+       //make a dfs call
+        dfs(i,j,vis);
+     }
+   
+}
+}
+
