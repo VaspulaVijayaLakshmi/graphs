@@ -1,3 +1,6 @@
+//Recursive
+
+
 class Solution{
 public:
     // Function to return a list containing the DFS traversal of the graph.
@@ -31,3 +34,49 @@ public:
         return ans;
     }
 };
+
+
+
+______________________________________________________________________________
+______________________________________________________________________________
+
+
+
+
+
+//Iterative
+
+
+
+
+
+//dry run on any example you will understand better
+vector<int> dfsOfGraph(int N, vector<int> adj[]) {
+        // Code 
+        
+        vector<int> ans;
+         vector<bool> vis(N,false);
+        
+        stack<int> stk;
+        stk.push(0);
+        
+        while(!stk.empty()){
+            
+            int node=stk.top();
+            stk.pop();
+            
+            if(vis[node])continue;
+            ans.push_back(node);
+            
+            vis[node]=true;
+            
+            for(int j=adj[node].size()-1;j>=0;j--){
+                
+                int child=adj[node][j];
+                if(!vis[child])
+                stk.push(child);
+            }
+        }
+        
+        return ans;
+    }
