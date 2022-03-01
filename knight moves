@@ -53,6 +53,9 @@ bool check(int x, int y, int A, int B)
 }
 
 
+//we can maintain dis and vis array just like normal bfs//
+
+
 //in this problem we are doing a smart optimization,we are not using vis array and dis array
 //i.e we r initializing the board(i.e dp) =-1
 //if the dp[i][j] =-1 it is unvisted
