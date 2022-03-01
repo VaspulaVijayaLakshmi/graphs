@@ -1,0 +1,142 @@
+problem link:
+https://www.hackerearth.com/practice/algorithms/graphs/depth-first-search/practice-problems/algorithm/jungle-run/
+
+
+problem: 
+
+You are lost in a dense jungle and it is getting dark. There is at least one path that 
+leads you to the city on the other side but you cannot see anything until you are right in front 
+of it as the trees and bushes obscure the path.
+Devise an algorithm that is guaranteed to find the way out. Your goal is to go out of the jungle as fast as you can before it gets dark.
+
+
+
+Input start with a number N and then the matrix of size N x N filled with S, E, T, and P which is our map. 
+
+Map contains a single S representing the start point
+single E representing the end point and 
+P representing the path 
+and T representing the Tree.
+
+[Output]:
+output single integer i.e. minimum number of moves from S to E
+
+
+
+
+
+input:
+5   
+S P P P P
+T P T P P
+T P P P P
+P T E T T
+P T P T T
+
+
+o/p:5
+
+
+intuition:
+we have a strt and we have an end
+so we can use bfs
+
+
+ 
+S P P P P       ||    0  1  2  3  4  
+T P T P P       ||    T  2  T  4  5
+T P P P P       ||    T  3  4  5  6
+P T E T T       ||    P  T  5  T  T
+P T P T T       ||    P  T  P  T  T
+ 
+ so end is at 6
+
+
+
+//BFS on grid
+
+
+bool isValid(int X,int Y){
+
+if(X<0 || X>N || Y<0 || Y>N || grid[X][Y]=='T') return false;
+if(vis[X][Y]) return false;
+return true;
+
+}
+
+
+
+
+int bfs(int srcX,int srcY){
+
+int dx={-1,1,0,0};
+int dy={0,0,-1,1};
+
+queue<pair<int,int>> q;
+
+q.push({srcX,srcY});
+dis[srcX][srcY]=0;
+vis[srcX][srcY]=true;
+q.pop();
+
+
+while(!q.empty()){
+
+int currX=q.front().first;
+int currY=q.front().second;
+
+q.pop();
+
+
+  for(int i=0;i<4;i++){
+
+     if(isValid(currX+dX[i],currY+dY[i])){
+
+         int newX=currX+dX[i];
+         int newY=currY+dY[i];
+
+         q.push({newX,newY});
+         vis[newX][newY]=true;
+         dis[newX][newY]=dis[newX][newY]+1;
+
+      }
+
+   }
+
+ }
+
+}
+
+
+
+
+int main(){
+
+for(int i=0;i<N;i++){
+  for(int j=0;j<M;j++){
+  
+  if(grid[i][j]=='S'){
+      srcX=i;
+      srcY=j;
+  
+  }
+  
+  if(grid[i][j]=='E'){
+  
+     endX=i;
+     endY=j;
+  }
+  
+ } }
+  
+  bfs(srcX,srcY);
+return dis[endX][endY];
+
+}
+
+
+
+
+
+
+
