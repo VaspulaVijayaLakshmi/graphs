@@ -1,0 +1,76 @@
+There are n pupils in Uolevi's class, and m 
+friendships between them. Your task is to divide the pupils into two teams in such a way 
+that no two pupils in a team are friends. You can freely choose the sizes of the teams.
+
+
+also questions like there are m people and n enemies between them.We need to divide them into 2 teams .
+The problem is the enemies do not agree on anything,so we do no recommend them putting them on the same team.
+so we need to divide the teams (of same or diff sizes) so that enemies does nt come togeather in same team
+
+bipartite graph is a graph coloring problem 
+A Bipartite Graph is a graph whose vertices can be divided into two independent sets, 
+U and V such that every edge (u, v) either connects a vertex from U to V or a vertex from V to U.
+
+In other words, for every edge (u, v), either u belongs to U and v to V,or u belongs to V and v to U. 
+
+We can also say that there is no edge that connects vertices of same set.
+
+
+
+A bipartite graph is possible if the graph coloring is possible using two colors such that 
+vertices in a set are colored with the same color. 
+
+
+considers col=0 and 1
+
+void dfs(int node,int col==>0){
+
+vis[node]=true;
+col[node]=col;
+
+for(child:adj[node]){
+
+if(!vis[child]){
+  dfs(child,col^1);
+}
+
+
+else if(vis[child]){
+ if(col[node]==col[child]) return false;
+}
+
+
+}
+
+return true;
+
+}
+
+
+
+//slight optimization
+//once dfs call return false,no need to futher check other nodes ,we can stop there itself
+
+
+void dfs(int node,int col==>0){
+
+vis[node]=true;
+col[node]=col;
+
+for(child:adj[node]){
+
+if(!vis[child]){
+  if(dfs(child,col^1)==false)
+  return false;
+}
+
+
+else if(vis[child]){
+ if(col[node]==col[child]) return false;
+}
+
+
+}
+
+}
+
