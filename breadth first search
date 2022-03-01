@@ -5,9 +5,15 @@ public:
         // Code here
         queue<int> q;
         vector<bool> vis(N,false);
+        
+        //the distance vector is optional to check the  distance between source node and the node.
+        int dis[N];
+        
         vector<int> ans;
         
         q.push(0);
+        //the distance from node 0 to 0
+        dis[0]=0;
         
         while(!q.empty()){
            
@@ -20,8 +26,10 @@ public:
            vis[node]=true;
            
            for(int child:adj[node]){
-               if(!vis[child])
+               if(!vis[child]){
+               dis[child]=dis[node]+1;
                  q.push(child);
+                 }
            }
         }
         
