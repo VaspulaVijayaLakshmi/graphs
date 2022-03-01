@@ -1,0 +1,6 @@
+Given an undirected graph, how to check if there is a cycle in the graph?
+
+//intuition :
+while traversing through dfs,we need to find bak edge
+//back edge is an edge that connects 
+dfs()
