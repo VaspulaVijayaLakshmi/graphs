@@ -1,0 +1,38 @@
+
+problem:https://cses.fi/problemset/task/1192
+problem explanation:https://www.youtube.com/watch?v=WUqkIH1gHMM&list=PL2S6Mj7iLqEjNVq0e-pZ9rSnpAacHzVm3&index=3
+
+
+
+You are given a map of a building, and your task is to count the number of its rooms. The size of the map is n×m
+ squares, and each square is either floor or wall. You can walk left, right, up, and down through the floor squares.
+
+
+Each characters describing the map. Each character is either . (floor) or # (wall).
+
+
+Input:
+5 8
+########
+#..#...#
+####.#.#
+#..#...#
+########
+
+Output:
+3
+
+
+INTUITION:
+
+THis is basically dfs on grid
+the objective of the problem is to find the number of connected components
+
+
+traverse through the matrix
+and if the character is "." check if it is visited or not 
+if it is not visited,make a  dfs call,it will cover all the VALID CONTINUOS boxes.
+
+and each time we visit such a char "." and it is unvisited ==>it is a new component or new room.
+increment the room count;
+
