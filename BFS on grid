@@ -1,0 +1,109 @@
+//normal bfs
+
+void bfs(int src){
+
+
+queue<int> q;
+vector<bool> vis(N);
+
+
+q.push(src);
+vis[src]=true;
+dis[src]=0;
+
+
+while(!q.empty()){
+
+int node=q.front();
+q.pop();
+
+
+ for(int child:adj[node]){
+
+   if(!vis[child]){
+   
+    dis[child]=dis[node]+1;
+    vis[child]=true;
+    q.push(child);
+    
+   }
+ }
+
+}
+
+
+}
+
+
+
+
+
+
+//bfs on grid
+
+
+
+bool isValid(int X,int Y){
+
+if(x<0 ||x>N ||y<0 ||y>M)
+return false;
+
+if(vis[X][Y])return false;
+
+return false;
+}
+
+
+
+
+
+void bfs(int srcX,int srcY){
+
+vector<vector<bool>> vis(N,vector<bool>(M));
+
+queue<int> q;
+q.push({srcX,srcY});
+
+dis[srcX][srcY]=0;
+vis[srcX][srcY]=true;
+
+int dx={-1,+1,0,0};
+int dy={0,0,-1,+1};
+
+while(!q.empty()){
+
+int currX=q.front().first;
+int currY=q.front().second;
+
+q.pop();
+
+for(int i=0;i<4;i++){
+
+if(isValid(currX + dx[i] ,currY + dy[i])){
+
+int newX=currX+dx[i];
+int newY=currY+dy[i];
+
+vis[newX][newY]=true;
+dis[newX][newY]=dis[currX][currY]+1;
+q.push({newX,newY});
+
+}
+
+}
+
+}
+
+}
+
+
+for(int i=0;i<n;i++){
+  for(int j=0;j<m;j++){
+  
+  cout<<dis[i][j]<<" ";
+  
+  }
+  
+  cout<<"\n";
+}
+
