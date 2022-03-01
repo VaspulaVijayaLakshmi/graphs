@@ -1,0 +1,49 @@
+NUMBER OF CONNECTED COMPONENTS:
+
+Given n, i.e. total number of nodes in an undirected graph numbered from 1 to n and an integer e, i.e. total number of edges in the graph.
+Calculate the total number of connected components in the graph. 
+A connected component is a set of vertices in a graph that are linked to each other by paths.
+
+
+Intuition:
+
+DFS call on a graph visits all connected vertices of the given vertex.
+SO to count the number of connected components we  iterate over all vertices, whenever we see unvisited node, 
+it is because it was not visited by DFS done on vertices so far.
+That means it is not connected to any previous nodes visited so far i.e it was not part previous components.
+Hence this node belongs to new component.
+this means, before visiting this node, we just finished visiting all  nodes  previous component and 
+that component is now complete.so we need to increment component counter as we completed  a component
+
+
+
+   void dfs(vector<int> adj[],int node,  vector<bool> &vis,vector<int>  &ans){
+        
+        vis[node]=true;
+        ans.push_back(node);
+        
+        for(int child:adj[node]){
+            if(!vis[child])
+            dfs(adj,child,vis,ans);
+        }
+        
+    }
+
+
+
+int connect_comp(int n,vector<int> adj[]){
+
+int connected_components=0;
+   vector<int> ans;
+   vector<bool> vis(N,false);
+         
+         
+for(int i=0;i<n;i++){
+if(!vis[i]) {
+connected_components++;
+  dfs(adj,i,vis,ans);
+
+}
+return connected_components;
+
+}
