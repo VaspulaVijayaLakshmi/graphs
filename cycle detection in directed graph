@@ -1,1 +1,24 @@
+Given a directed graph, check whether the graph contains a cycle or not. 
+Your function should return true if the given graph contains at least one cycle, else return false.
 
+
+
+
+bool containsCycle(int node){
+
+vis[node]=true;
+
+for(int child:adj[node]){
+
+if(!vis[child]){
+
+vis[child]=true;
+containsCycle(child);
+
+}
+
+
+}
+
+
+}
