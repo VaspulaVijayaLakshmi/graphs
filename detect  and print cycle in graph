@@ -1,0 +1,48 @@
+prblm explanation:
+https://www.youtube.com/watch?v=JoOuju5N-5g&list=PL2q4fbVm1Ik6DCzm9XZJbNwyHtHGclcEh&index=46
+
+Eg:
+Byteland has n cities and m roads between them. Your task is to design a round trip that begins in a city, goes through two or more other cities, 
+ and finally returns to the starting city. 
+ Every intermediate city on the route has to be distinct.
+ 
+ 
+ Example
+
+Input:
+5 6
+1 3
+1 2
+5 3
+1 5
+2 4
+4 5
+
+Output:
+4
+3 5 1 3
+
+
+ 
+ void dfs(int node){
+ 
+ temp.push_back(node);
+ vis[node]=true;
+ 
+ for(int child:adj[node]){
+ 
+ if(! vis[child]){
+     if(dfs(child,node)==true) return true;
+ }
+ 
+ else 
+    if(child!=node) {
+    //since it is //3 5 1 3,so we need toprint the strt pos again
+    temp.push_back(child);
+    return true;
+ }
+ }
+ 
+ temp.pop_back();
+ return false;
+ }
