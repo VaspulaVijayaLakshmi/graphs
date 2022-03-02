@@ -1,0 +1,76 @@
+You are given a map of a labyrinth, and your task is to find a path from start to end. You can walk left, right, up and down.
+
+Input
+
+The first input line has two integers n and m: the height and width of the map.
+
+
+First print "YES", if there is a path, and "NO" otherwise.
+
+If there is a path, print the length of the SHORTESST  path and its description as a 
+string consisting of characters L (left), R (right), U (up), and D (down). 
+You can print any valid solution.
+
+Input:
+5 8
+########
+#.A#...#
+#.##.#B#
+#......#
+########
+
+
+Output:
+YES
+9
+LDDRRRRRU
+
+
+//bfs on grid
+
+bool isValid(int x,int y){
+
+if(x<0 || x>N || y<0 || y>M )return false;
+
+if(grid[x][y]=='#' || vis[x][y]==true) return false;
+
+return true;
+}
+
+
+
+void bfs(int strtX,int strtY,int destX,int destY){
+
+queue<pair<int,int>> q;
+q.push({strtX,strtY});
+vis[strtX][strtY]=true;
+dis[strtX][strtY]=0;
+
+int dX={-1,1,0,0};
+int dY={0,0,-1,1};
+
+while(!q.empty()){
+
+int currX=q.front().first;
+int currY=q.front().second;
+q.pop();
+
+
+for(int i=0;i<4;i++){
+if(isValid(currX+dX[i],currY+dY[i]))
+{
+int newX=currX+dX[i];
+int newY=currY+dY[i];
+
+vis[newX][newY]=true
+q.push({newX,newY});
+dis[newX][newY]=dis[currX][currY]+1;
+
+}
+}
+}
+
+}
+
+
+
