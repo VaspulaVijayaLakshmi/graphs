@@ -1,0 +1,85 @@
+Topological sorting for Directed Acyclic Graph (DAG) is a linear ordering of vertices such that for every directed edge uv, 
+vertex u comes before v in the ordering. 
+Topological Sorting for a graph is not possible if the graph is not a DAG.
+
+
+we are approching this problem by taking  indegree of the vertices.
+
+SO we need to find the vertices that have indegree as 0
+if indegree=0 means that no other nodes depends on this node and  puts this in our topo res and decrease the 
+indegree of the nodes that were dependent on this node.
+
+now if any of the  neighbors node's indegree becomes zero then push it into stack.
+
+//so in this approch we try to constantly process and remove the node and reduce it's neightboring node's indegree 
+and if it becomes we process them and remove them.
+
+step1:
+
+Calculate the in-degree of each vertex of the graph and store them in the array “temp”.
+
+
+steps:
+
+Enqueue the vertices with the in-degree of 0.
+
+
+While the queue is not empty:
+
+2.1. Dequeue a vertex.
+
+2.2. Add this vertex to the result.
+
+2.3. mark as  “visited”.
+
+2.4. Decrement the in-degree of all its neighboring vertices by 1 in the array “temp”.
+
+2.5 Enqueue the neighboring vertices with the in-degree of 0.
+
+If the value of the “visited” variable is equal to the number of vertices in the graph, then the graph is indeed directed and acyclic 
+​and the result will contain the topological sort for the graph.
+
+
+
+kahn_algo(int n){
+
+queue<int> q;
+
+for(int i=1;i<=n;i++){
+if(indeg[i]==0) q.push(i);
+}
+
+
+while(!q.empty()){
+
+int curr=q.front();
+q.pop();
+res.push_back(curr);
+
+
+for(int child:adj[curr]){
+
+indeg[child]--;
+ if(indeg[child]==0);
+q.push(child);
+}
+
+}
+
+}
+
+
+
+
+
+//this is input
+cin>>m>>n;
+
+for(int i=1;i<=m;i++){
+
+cin>>x>>y;
+
+adj[x].push_back(y);
+indeg[y]++;
+
+
