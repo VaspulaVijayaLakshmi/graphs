@@ -2,23 +2,52 @@ Given a directed graph, check whether the graph contains a cycle or not.
 Your function should return true if the given graph contains at least one cycle, else return false.
 
 
+class Solution{
 
-
-bool containsCycle(int node){
-
-vis[node]=true;
+public:
+    // Function to detect cycle in a directed graph.
+    bool isCyclic(int V, vector<int> adj[]) {
+        
+    vector<int> vis(V , 0);
+        
+        
+        //check for all connected components
+        for(int i = 0; i < V; i++){
+            if(vis[i] == 0){
+                if(checkCycle(i,vis,adj))return true;
+            }
+        }
+        return false;
+        
+        
+        
+    }
+    
+    
+ bool checkCycle(int node , vector<int>&vis , vector<int> adj[]){ 
+   vis[node]=true;
 
 for(int child:adj[node]){
 
-if(!vis[child]){
+if(vis[child]==0){
+  if(checkCycle(child,vis,adj)) return true;
+}
 
-vis[child]=true;
-containsCycle(child);
+
+//if it has already visited.
+else if(vis[child]==1)return true;
 
 }
 
 
-}
+//trace back
+vis[node]=2;
+return false;
 
 
-}
+
+    }
+    
+    
+    
+};
