@@ -1,0 +1,48 @@
+//detect cycle in directed graph using topological sort using kahn's algorithm
+
+
+//since topological sort will work only on DAG
+//so if there is a cycle it will not work
+//so after processing each node we will cover all the nodes in the end,
+but in case of cycle the queue will be empty(as there will be no nodes whose indegree is zero)
+//and will quit before processign all nodes
+
+//so we will make use of this and check if all the nodes r processed,if nt then it contains a cycle
+//count the number of nodes processed 
+//and check if it is equal to the nodes in graph
+
+class Solution
+public:
+    // Function to detect cycle in a directed graph.
+    bool isCyclic(int N, vector<int> adj[]) {
+        queue<int> q;
+        int inDegree[N];
+        memset(inDegree,0,sizeof inDegree);
+        for(int i=0;i<N;i++){
+            for(auto it:adj[i]){
+                inDegree[it]++;
+            }
+        }
+        
+        
+        for(int i=0;i<N;i++){
+            if(inDegree[i]==0){
+                q.push(i);
+            }
+        }
+        int count=0;
+        while(!q.empty()){
+            int cur=q.front();
+            q.pop();
+            count++;
+            for(auto nbr:adj[cur]){
+                inDegree[nbr]--;
+                if(inDegree[nbr]==0){
+                    q.push(nbr);
+                }
+            }
+        }
+        if(count==N)
+            return false;
+        return true;
+    }
