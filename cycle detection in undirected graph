@@ -3,4 +3,26 @@ Given an undirected graph, how to check if there is a cycle in the graph?
 //intuition :
 while traversing through dfs,we need to find bak edge
 //back edge is an edge that connects 
-dfs()
+
+dfs(parent,node){
+
+vis[node]=true;
+
+
+for(int child:adj[node]){
+
+//if child is not visited then make a dfs call to it and pass "node" as child
+if(!vis[node]){
+
+if(dfs(child,node)==false)return false;
+}
+
+
+//if the child is already visited,then check if it is parent, if it is not parent then it is back edge then cycle is present
+else if(child!=parent) return false;
+
+}
+
+return true;
+
+}
