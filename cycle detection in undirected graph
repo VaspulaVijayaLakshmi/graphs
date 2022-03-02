@@ -14,15 +14,15 @@ for(int child:adj[node]){
 //if child is not visited then make a dfs call to it and pass "node" as child
 if(!vis[node]){
 
-if(dfs(child,node)==false)return false;
+if(dfs(child,node)==true)return true;
 }
 
 
 //if the child is already visited,then check if it is parent, if it is not parent then it is back edge then cycle is present
-else if(child!=parent) return false;
+else if(child!=parent) return true;
 
 }
 
-return true;
+return false;
 
 }
