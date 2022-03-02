@@ -1,0 +1,83 @@
+In a social networking site, people are connected with other people. 
+The whole system appears as a giant connected graph.
+
+
+In this question, you are required to answer the total number of people connected at t nodes away from each other (t distance connectivity). 
+
+
+First line of input line contains, two integers n and e, where n is the nodes and e are the edges. 
+Next e line will contain two integers u and v meaning that node u and node v are connected to each other in undirected fashion.
+Next line contains single integer, m, which is number of queries. Next m lines, each have two inputs, 
+one as source node and other as a required t distance connectivity which should be used to process query.
+
+
+input:
+9 10  (m,n)
+
+1 2   (edges)
+2 3
+1 7
+2 4
+3 4
+4 7
+7 8
+9 7
+7 6
+5 6
+
+
+3  (queries)
+
+
+4 2  (src node , the number of nodes that are present at the distance of 2 from node 4)
+5 3
+2 1
+
+
+SAMPLE OUTPUT :
+
+4   //the number of nodes that are at distance of  2 from node 4
+4
+3
+
+
+//a=src,b=dis 
+
+void bfs(int a, int b){
+    queue<int> q;
+    q.push(a);
+    vis[a]=1;
+    
+    int count=0; // count denotes the level no. 
+    while(!q.empty()){
+    
+        int len=q.size(); // len denotes no. of elements in a level
+        
+        if(count==b){    //count==>level==b
+        
+            //number of nodes that are present at a dis 'd' from src=the number of elements in queue
+            res=len
+            return res;   /or return len
+        }
+        
+        for(int i=0; i<len; i++){
+            int node=q.front();
+            q.pop();
+            
+            for(int child: arr[node]){
+                if(vis[child]==0){
+                    q.push(child);
+                    vis[child]=1;
+                }
+            }
+        }
+        
+        
+        count++;
+    }
+}
+
+
+
+
+
