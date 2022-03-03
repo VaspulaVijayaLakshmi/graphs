@@ -1,0 +1,159 @@
+Problem link:
+https://cses.fi/problemset/task/1667
+
+problem explanation:
+https://www.youtube.com/watch?v=TJolGL0G3O4&list=PL2S6Mj7iLqEjNVq0e-pZ9rSnpAacHzVm3&index=7
+
+
+problem description:
+
+Syrjälä's network has n computers and m connections. 
+Your task is to find out if Uolevi can send a message to Maija, 
+and if it is possible, what is the minimum number of computers on such a route.
+
+
+Input:
+
+The first input line has two integers n and m : the number of computers and connections.
+The computers are numbered 1,2,…,n
+
+ ===> Uolevi's computer is 1  and Maija's computer is n
+
+Then, there are m lines describing the connections. Each line has two integers a and b : there is a connection between those computers.
+Every connection is between two different computers, and there is at most one connection between any two computers.
+
+
+
+
+This is single source shortest path problem
+
+Eg:
+
+Input:
+5 5  (m,n)
+
+1 2
+1 3
+1 4
+2 3
+5 4
+
+
+Output:
+3
+1 4 5
+
+
+//instead of using dis array,we will use different approach,i.e disjoint set aproach to find the distance from1 to n and also to print the path.
+
+
+
+#include <bits/stdc++.h>
+#define endl "\n"
+using namespace std;
+#define int long long int
+ 
+int n, m;
+vector<vector<int>> adj;
+vector<int> par;
+vector<bool> vis;
+
+
+
+void bfs(int src){
+
+queue<int> q;
+q.push(src);
+q.pop();
+
+
+  while(!q.empty()){
+
+   int curr=q.front();
+   q.pop();
+
+   for(int child:adj[curr]){
+
+   if(!vis[child]){
+
+    par[child]=curr;
+    vis[child]=true;
+    q.push(child);
+
+   }
+   }
+
+}
+
+}
+
+
+
+
+
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n >> m;
+ 
+ //we didnt declare the size of adj list,vis array and par array,so we need to use resize() function to set this sizes
+	
+  adj.resize(n+1);
+	vis.resize(n+1);
+	par.resize(n+1);
+  
+  
+  
+  
+	for(int i = 0; i<=n; ++i)
+	{
+		par[i] = -1;
+	}
+  
+  
+	for(int i = 0; i < m; ++i)
+	{
+		int u, v;
+		cin >> u >> v;
+		adj[u].push_back(v);
+		adj[v].push_back(u);
+	}
+  
+  
+	bfs();
+  
+  
+  if(par[n] == -1)
+	{
+		cout <<  "IMPOSSIBLE";
+		return 0;
+	}
+  
+  
+  int candidate=n;
+  //we have to use stack because we are coming from n to 1,by following its parent
+  stack<int> stk;
+  
+  while(candidate!=-1){
+  
+  stk.push(candidate);
+  candidate=par[candidate];
+  
+  }
+  
+  
+  int dis=stk.size();
+  
+  while(!stk.empty()){
+  
+  cout << stk.top() << " ";
+		stk.pop();
+  }
+ 
+
+
+
+
+
