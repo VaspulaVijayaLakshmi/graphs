@@ -1,0 +1,128 @@
+problem link: https://cses.fi/problemset/task/1666
+
+problem explantaion: https://www.youtube.com/watch?v=ZuahPX13NR4&list=PL2S6Mj7iLqEjNVq0e-pZ9rSnpAacHzVm3&index=4
+
+
+
+problem:
+
+Byteland has n  cities, and m roads between them. The goal is to construct new roads so that there is a route between any two cities.
+Your task is to find out the minimum number of roads required
+
+and also determine which roads should be built.
+
+
+
+Input:
+
+The first input line has two integers n and m: the number of cities and roads. The cities are numbered 1,2,…,n
+After that, there are m  lines describing the roads. Each line has two integers a and b: there is a road between those cities.
+
+
+
+
+Output:
+
+First print an integer k : the number of required roads.
+Then, print k lines that describe the new roads. You can print any valid solution.
+
+
+Intuition:
+//there should be atleast 1 path from 1 city to another city
+//so the graph shld have 1 connected components
+
+
+//so we need to check the number of connected components 
+// if there are more than 1 connected components ,
+//we need to connect 1 vertex of 1 connected component to another vertex in other connected component.
+
+//if there is only 1 connected componets,there is always a path from each node to another ,so number of roads required are 0
+
+
+
+Input:
+4 2
+1 2
+3 4
+
+Output:
+1
+2 3
+
+
+
+
+#include <bits/stdc++.h>
+#define endl "\n"
+using namespace std;
+#define int long long int
+ 
+int n, m;
+int cc = 0;
+vector<vector<int>> g;
+vector<bool> vis;
+vector<int> lead;
+ 
+void dfs(int u)
+{
+	vis[u] = true;
+	for(auto v: g[u])
+	{
+		if(!vis[v])
+		{
+			dfs(v);
+		}
+	}
+}
+ 
+ 
+ 
+void process_cc()
+{
+	for(auto i = 1; i <= n; ++i)
+	{
+		if(!vis[i])
+		{
+			cc++;
+      
+      //collect each vertex of the new connected components
+      //to determine which roads should be built.
+     
+      
+      
+			lead.push_back(i);
+			dfs(i);
+		}
+	}
+}
+ 
+ 
+int32_t main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n >> m;
+	g.resize(n+1);
+	vis.resize(n+1);
+	for(auto i = 0; i < m; ++i)
+	{
+		int u, v;
+		cin >> u >> v;
+		g[u].push_back(v);
+		g[v].push_back(u);
+	}
+ 
+	process_cc();
+ 
+	
+	
+}
+}
+
+
+
+
+
+
+
+
