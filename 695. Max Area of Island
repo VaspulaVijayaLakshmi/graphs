@@ -1,0 +1,190 @@
+PROBLEM LINK: https://leetcode.com/problems/max-area-of-island/
+
+
+You are given an m x n binary matrix grid. An island is a group of 1's (representing land) 
+connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.
+
+The area of an island is the number of cells with a value 1 in the island.
+
+Return the maximum area of an island in grid. If there is no island, return 0.
+
+
+Input: grid = [[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],
+               [0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]]
+Output: 6
+Explanation: The answer is not 11, because the island must be connected 4-directionally.
+
+
+
+Example 2:
+
+Input: grid = [[0,0,0,0,0,0,0,0]]
+Output: 0
+
+
+
+
+
+
+// class Solution {
+// public:
+    
+//     int dfs(vector<vector<int>>& grid,int x,int y,vector<vector<bool>> &vis){
+        
+//         if(x<0 || y<0 || x>=grid.size() || y>=grid[0].size() || grid[x][y]==0 ||vis[x][y]==1){
+//             return 0;
+//         }
+        
+//         vis[x][y]=true;
+        
+//         int area=0;
+        
+//         area += dfs(grid,x+1,y,vis);
+//         area += dfs(grid,x-1,y,vis);
+//         area += dfs(grid,x,y-1,vis);
+//         area += dfs(grid ,x,y+1,vis );
+        
+//         return 1+area;
+//     }
+    
+    
+    
+    
+    
+//     int maxAreaOfIsland(vector<vector<int>>& grid) {
+        
+        
+//         int rows=grid.size();
+//         int col=grid[0].size();
+        
+        
+//        vector<vector<bool>>vis(rows, vector<bool>(col, false));
+//         //intialising a grid with all false to check whether a node is visited or not
+        
+//         int maxArea=0;
+        
+//         for(int i=0;i<rows;i++){
+//             for(int j=0;j<col;j++)
+//             {
+                
+//                 if( vis[i][j]==0  && grid[i][j]==1 ){
+//                    maxArea = max( dfs(grid,i,j,vis) , maxArea );
+//                 }
+//             }
+//         }
+//         return maxArea;
+        
+//     }
+// };
+
+
+
+
+
+
+
+
+
+
+//class Solution {
+// public:
+    
+//     int dfs(vector<vector<int>>& grid,int x,int y,vector<vector<bool>> &vis){
+        
+//         if(x<0 || y<0 || x>=grid.size() || y>=grid[0].size() || grid[x][y]==0 ||vis[x][y]==1){
+//             return 0;
+//         }
+        
+//         vis[x][y]=true;
+        
+        
+//           return 1 + dfs(grid,x+1,y,vis) + dfs(grid,x-1,y,vis) + dfs(grid,x,y-1,vis) + 
+//                  dfs(grid ,x,y+1,vis );
+        
+//     }
+    
+    
+    
+    
+    
+//     int maxAreaOfIsland(vector<vector<int>>& grid) {
+        
+        
+//         int rows=grid.size();
+//         int col=grid[0].size();
+        
+        
+//        vector<vector<bool>>vis(rows, vector<bool>(col, false));
+//         //intialising a grid with all false to check whether a node is visited or not
+        
+//         int maxArea=0;
+        
+//         for(int i=0;i<rows;i++){
+//             for(int j=0;j<col;j++)
+//             {
+                
+//                 if( vis[i][j]==0  && grid[i][j]==1 ){
+//                    maxArea = max( dfs(grid,i,j,vis) , maxArea );
+//                 }
+//             }
+//         }
+//         return maxArea;
+        
+//     }
+// };
+
+
+
+
+
+
+
+
+
+
+
+class Solution {
+public:
+    
+    int dfs(vector<vector<int>>& grid,int x,int y){
+        
+        if(x<0 || y<0 || x>=grid.size() || y>=grid[0].size() || grid[x][y]==0 ){
+            return 0;
+        }
+        
+        grid[x][y]=0;
+        
+        
+          return 1 + dfs(grid,x+1,y) + dfs(grid,x-1,y) + dfs(grid,x,y-1) + 
+                 dfs(grid ,x,y+1);
+        
+    }
+    
+    
+    
+    
+    
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        
+        
+        int rows=grid.size();
+        int col=grid[0].size();
+        
+    
+        
+        int maxArea=0;
+        
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<col;j++)
+            {
+                
+                if( grid[i][j]==1 ){
+                   maxArea = max( dfs(grid,i,j) , maxArea );
+                }
+            }
+        }
+        return maxArea;
+        
+    }
+};
+
