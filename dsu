@@ -29,4 +29,8 @@ class Solution {
             rankk[x]++;
         }
     }
+
+initilaize par array(){
+par[i] = i;
+
 };
