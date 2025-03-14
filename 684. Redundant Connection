@@ -1,0 +1,72 @@
+// Thought Prcoess : MST
+
+// because we can sort the edges and keep adding each node
+// when we add if it belongs to sae parent then that is redundant.
+
+
+// sort+dsu
+
+class Solution {
+public:
+
+vector<int>  par; 
+vector<int> size; //rank
+
+
+int find(int x){
+
+ if(x==par[x])
+ return x;
+
+ return find(par[x]);
+
+}
+
+
+vector<int> unionByRank(int x,int y){
+
+    int a = find(x);
+    int b = find(y);
+
+    if( a == b) return {x,y};
+
+        if(size[a] >= size[b]){
+
+            par[b]=a;
+            size[a]+=size[b];
+        }
+
+        else{
+           par[a]=b;
+            size[b]+=size[a]; 
+        }
+
+        return {};
+
+}
+
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+      
+      vector<vector<int>> res;
+
+       int n=edges.size();
+       par.resize(n+1);
+       size.resize(n+1);
+
+       for(int i=0;i<n;i++){
+        par[i] = i;
+        size[i] = 0;
+       }
+
+       for(int i=0;i<edges.size();i++){
+          vector<int> x= unionByRank(edges[i][0],edges[i][1]);
+
+          if(!x.empty())
+           res.push_back(x);
+       }
+
+       int k=res.size();
+       return res[k-1];
+
+    }
+};
