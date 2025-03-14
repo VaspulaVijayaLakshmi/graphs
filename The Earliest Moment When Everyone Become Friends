@@ -23,3 +23,73 @@ The third event occurs at timestamp = 20190107 and after 2 and 3 become friends 
 The fourth event occurs at timestamp = 20190211 and after 1 and 5 become friends we have the following friendship groups [0,1,5], [2,3,4].
 The fifth event occurs at timestamp = 20190224 and as 2 and 4 are already friend anything happens.
 The sixth event occurs at timestamp = 20190301 and after 0 and 3 become friends we have that all become friends.
+
+
+
+
+Input: logs = [[0,2,0],[1,0,1],[3,0,3],[4,1,2],[7,3,1]], n = 4
+Output: 3
+Explanation: At timestamp = 3, all the persons (i.e., 0, 1, 2, and 3) become friends.
+
+
+
+
+
+Earliest time to become frdns
+
+
+logs[i] = [timestamp, id_A, id_B]
+
+[[0,2,0],[1,0,1],[3,0,3],[4,1,2],[7,3,1]]
+
+List is sorted by timestamp
+
+1sec  [0,2,0]   2-0 
+
+2sec  [1,0,1]   2-0-1
+
+3sec  [3,0,3]   2-0-1
+             |
+             3
+
+      [4,1,2]    1 and 2 already know other
+
+      [7,3,1]    1 and 3 are already connected
+_________
+3sec
+
+
+
+
+Sort + DSU
+
+MST -> Sort the edges by time stamp
+
+
+If the frnds belong to same group, skip that edge
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
