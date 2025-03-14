@@ -1,0 +1,32 @@
+class Solution {
+    vector<int> parent;
+    vector<int> rankk;
+
+    // Find the root of the set containing element x with path compression.
+    int find(int x) {
+        if (parent[x] == x) {
+            return x;
+        }
+        return parent[x] = find(parent[x]);
+    }
+
+    // Union two sets containing elements x and y.
+    void unionSet(int x, int y) {
+        x = find(x);
+        y = find(y);
+
+        if (x == y) {
+            return;  // x and y are already in the same set.
+        }
+
+        // Union by rank to keep the tree flat.
+        if (rankk[x] > rankk[y]) {
+            parent[y] = x;
+        } else if (rankk[x] < rankk[y]) {
+            parent[x] = y;
+        } else {
+            parent[y] = x;
+            rankk[x]++;
+        }
+    }
+};
