@@ -68,6 +68,40 @@ MST -> Sort the edges by time stamp
 
 If the frnds belong to same group, skip that edge
 
+UNION FIND
+
+
+findAcquaintces(){
+
+sort(edges.begin(),edges.end());
+
+
+for(int i=0;i<edges.size();i++){
+
+int timestamp = edges[i][0]
+int a= edges[i][1]
+int b= edges[i][2]
+
+
+par1 = find(a)
+par2=  find(b)
+
+//same parent means they r already frnds do ntg
+
+//if not equal then find which set it belongs to
+if(par1 != par2){
+
+merge(a,b)
+    
+}
+
+c+= ; 
+
+
+}
+}
+
+
 
 
 
