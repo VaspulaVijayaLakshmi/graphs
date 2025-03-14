@@ -1,0 +1,89 @@
+990. Satisfiability of Equality Equations
+
+You are given an array of strings equations that represent relationships between variables where each string equations[i] is of length 4 and takes one of two different forms: "xi==yi" or "xi!=yi".Here, xi and yi are lowercase letters (not necessarily different) that represent one-letter variable names.
+
+Return true if it is possible to assign integers to variable names so as to satisfy all the given equations, or false otherwise.
+
+ 
+
+Example 1:
+
+Input: equations = ["a==b","b!=a"]
+Output: false
+Explanation: If we assign say, a = 1 and b = 1, then the first equation is satisfied, but not the second.
+There is no way to assign the variables to satisfy both equations.
+Example 2:
+
+Input: equations = ["b==a","a==b"]
+Output: true
+Explanation: We could assign a = 1 and b = 1 to satisfy both equations.
+
+
+
+
+
+
+class Solution {
+    vector<int> parent;
+    vector<int> rankk;
+
+    // Find the root of the set containing element x with path compression.
+    int find(int x) {
+        if (parent[x] == x) {
+            return x;
+        }
+        return parent[x] = find(parent[x]);
+    }
+
+    // Union two sets containing elements x and y.
+    void unionSet(int x, int y) {
+        x = find(x);
+        y = find(y);
+
+        if (x == y) {
+            return;  // x and y are already in the same set.
+        }
+
+        // Union by rank to keep the tree flat.
+        if (rankk[x] > rankk[y]) {
+            parent[y] = x;
+        } else if (rankk[x] < rankk[y]) {
+            parent[x] = y;
+        } else {
+            parent[y] = x;
+            rankk[x]++;
+        }
+    }
+
+public:
+    bool equationsPossible(vector<string>& vec) {
+        parent.resize(26);
+        rankk.resize(26, 0);
+
+        // Initialize each element to be its own parent (disjoint sets).
+        for (int i = 0; i < parent.size(); i++) {
+            parent[i] = i;
+        }
+
+        // Process all equality equations and perform union operations.
+        for (string& str : vec) {
+            if (str[1] == '=') {
+                unionSet(str[0] - 'a', str[3] - 'a');
+            }
+        }
+
+        // Process all inequality equations and check for contradictions.
+        for (string& str : vec) {
+            if (str[1] == '!') {
+                int x = find(str[0] - 'a');
+                int y = find(str[3] - 'a');
+
+                // If x and y are in the same set, a contradiction exists.
+                if (x == y) return false;
+            }
+        }
+
+        // No contradictions found, the equations are satisfiable.
+        return true;
+    }
+};
