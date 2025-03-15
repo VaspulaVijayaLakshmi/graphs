@@ -1,0 +1,108 @@
+class Solution {
+public:
+
+vector<int> par;
+vector<int> rank;
+
+
+int find(int n){
+
+    if(n == par[n])
+    return n;
+
+    return  find(par[n]);
+} 
+
+
+void unionRank(int x, int y){
+
+  if(rank[x]>=rank[y]){
+    par[y] = x;
+    rank[x]+=rank[y];
+  }
+
+  else{
+    par[x]=y;
+    rank[y]+=rank[x];
+  }
+
+}
+
+
+int makeConnected(int n, vector<vector<int>>& con) {
+
+       int extra_node=0;
+       int cc=n;
+       vector<int> nodes(n,-1);
+
+       par.resize(n+1);
+       rank.resize(n+1);
+
+      for(int i=0;i<n+1;i++){
+        par[i]=i;
+        rank[i]=0;
+      }
+
+
+       for(int i=0;i<con.size();i++){
+
+        int node1 = con[i][0];
+        int node2 = con[i][1];
+           
+           int x = find(node1);
+           int y = find(node2);
+
+        
+           if(x==y)
+              extra_node++;
+             
+          else{
+            cc--;
+           unionRank(x,y);
+          }
+
+ }
+
+
+if(extra_node< cc-1)
+return -1;
+
+return cc-1;
+
+
+    }
+
+};
+
+
+
+
+// You can extract certain cables between two directly connected computers,
+//  and place them between any pair of disconnected computers to make 
+//  them directly connected.
+
+// we have to remove  only existing cables, so find edges
+
+// for n vertices there needs to be (n-1) edges
+
+// we need to find redundant connections 
+// and also number of connected components
+
+// if number of connected components > redundant connections
+//    then return -1; 
+
+
+// how to find cnnected compents using DSU
+
+// Iterate through par array and find the diff parents
+
+// or we can do this also
+// total number of components in the beginning will be max 'n'
+// because we r considering that n nodes are not connected initally
+
+// everytime we do union operation we can decrease the total 
+// connected compnents
+
+
+
+
