@@ -1,0 +1,52 @@
+class Solution {
+public:
+
+    void dfs(vector<vector<int>> &adj, vector<bool> &vis,vector<int>&restricted, int strt,int &c){
+
+      vis[strt] = true;
+      c++;
+
+      for(int child : adj[strt]){
+
+        if(!vis[child]){
+
+            // this is giving time limit exceeded, dng find operation
+
+        //  if(find(restricted.begin(), restricted.end(), child) != restricted.end())
+        //    continue;   
+
+        dfs(adj,vis,restricted,child,c);
+
+        }
+
+      }
+
+
+    }
+
+
+    int reachableNodes(int n, vector<vector<int>>& edges, vector<int>& restricted) {
+        
+     vector<vector<int>> adj;
+     adj.resize(n+1);
+     vector<bool> vis(n+1,false);
+
+     for(int i=0 ; i<edges.size(); i++){
+
+       adj[edges[i][0]].push_back(edges[i][1]);
+       adj[edges[i][1]].push_back(edges[i][0]);
+       
+     }
+
+     int c=0;
+
+    //  we dont have to perform find op
+     for(int i=0;i<restricted.size();i++)
+      vis[restricted[i]]=true;
+
+
+     dfs(adj,vis,restricted,0,c);
+     return c;
+    
+    }
+};
