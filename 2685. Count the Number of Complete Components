@@ -1,0 +1,106 @@
+
+class Solution {
+
+vector<int> par;
+vector<int> rank;
+vector<int> edge;
+
+int find(int a){
+
+    if(a==par[a])
+    return a;
+
+    return find(par[a]);
+}
+
+
+void unionRank(int a,int b){
+
+if(rank[a]>=rank[b]){
+    par[b] = a;
+    rank[a]+=rank[b];
+    edge[a]=edge[a]+edge[b]+1;
+}
+
+else{
+     par[a] = b;
+     rank[b]+=rank[a];
+     edge[b]=edge[b]+edge[a]+1;
+}
+
+}
+
+
+
+
+
+
+public:
+    int countCompleteComponents(int n, vector<vector<int>>& edges) {
+
+    par.resize(n+1,-1);
+    rank.resize(n+1,1);
+    edge.resize(n+1,0);
+
+    for(int i=0;i<n;i++)
+       par[i]=i;
+
+    for(int i=0;i<edges.size();i++){
+             
+        int par1=  find(edges[i][0]);
+        int par2 = find(edges[i][1]);
+
+        if(par1==par2){
+           edge[par2]++;
+        //    we are incrementing parents edge 
+
+        // i.e, lets say we have [0,1][0,2][1,2]
+        // for  [1,2] -> par1=par2 =0
+
+        // so we r dng edge[0]++
+        }
+
+        if(par1!=par2)
+         unionRank(par1,par2);
+        
+    }
+
+   int tcc=0;
+
+  for (int i=0;i<n;i++){
+
+    if(par[i]==i){
+
+     int vertices = rank[i];
+     int e= edge[i];
+
+     cout<<vertices<<" "<<e<<"\n";
+
+     if(e == vertices*(vertices-1)/2)
+        tcc++;
+    }
+
+  }
+
+  return tcc ;
+
+}};
+
+
+
+// Let there be n nodes , each node should be connected to other (n-1) nodes
+
+// for n nodes -> n * (n-1) but the prblm is each edge is connected 2 times
+// so total edges should be n*(n-1)/2
+
+
+
+
+    // complete connected components
+
+    // In each connected component. 
+    // each node should be connected to all n-1 nodes
+    // since its undirected graph
+    // indegree/outdegree should be n-1 for all nodes
+
+
