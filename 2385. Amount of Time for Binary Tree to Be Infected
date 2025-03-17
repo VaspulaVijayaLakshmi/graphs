@@ -1,0 +1,82 @@
+//similar to Rotten oranges
+
+class Solution {
+    
+private:
+    //adjacency list
+    unordered_map<int,vector<int>> adj; 
+     
+    void createGraph(TreeNode* node){
+
+        queue<TreeNode*> q;
+        q.push(node);
+        unordered_map<int,bool> vis;
+
+        while(!q.empty()){
+
+            auto root = q.front();
+            q.pop();  
+
+        if(root->left){
+            q.push(root->left);
+            adj[root->val].push_back(root->left->val);
+            adj[root->left->val].push_back(root->val);
+        }
+
+        if(root->right){
+            q.push(root->right);
+            adj[root->val].push_back(root->right->val);
+            adj[root->right->val].push_back(root->val);
+        }
+
+
+        }
+        
+    }
+    
+public:
+    int amountOfTime(TreeNode* root, int start) {
+   
+        createGraph(root);  
+        
+        queue<int> q;
+        q.push(start);
+        //why are we maintaining hashmap instead of
+        //vector
+        //->its because we are not of value of node and they are not in order
+        //so we cant predict the size of vector
+        //to initlize the vector with default size like vis(100001)
+        //the given value is 10^5
+        //so space issues
+        unordered_map<int,bool> vis;
+        vis[start]=true;
+        int time=-1;
+        
+        //why time =-1
+        //because root will   take time 0
+        
+        //do bfs for graph
+        while(!q.empty()){
+            
+            int size=q.size();
+            while(size--){
+                
+                int front=q.front();
+                q.pop();
+                
+                for(int node: adj[front]){
+                    
+                    if(!vis[node]){
+                       vis[node]=true;
+                     
+                        q.push(node);
+                    }
+                }
+                
+            }
+            time++;
+        }
+        
+        return time;
+    }
+};
