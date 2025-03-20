@@ -1,0 +1,57 @@
+https://www.geeksforgeeks.org/problems/distance-from-the-source-bellman-ford-algorithm/1?page=1&category=Graph&sortBy=submissions
+
+
+
+class Solution {
+  public:
+    /*  Function to implement Bellman Ford
+     *   edges: vector of vectors which represents the graph
+     *   src: source vertex
+     *   V: number of vertices
+     */
+    vector<int> bellmanFord(int V, vector<vector<int>>& edges, int src) {
+        
+         static const int INF = 1e8;
+        // Code here
+        
+        vector<int> dis(V,INF);
+        dis[src]=0;
+   
+   
+        for(int i=0;i<V;i++){
+            
+           
+            // iterate through the edges v times
+            
+            for(auto edge : edges){
+                
+                int u=edge[0];
+                int v=edge[1];
+                int d=edge[2];
+                
+                if(dis[u] != INF && dis[u]+d < dis[v] )
+                   dis[v]=dis[u]+d;
+                
+            }
+            
+        } 
+        
+        // N+1 th relaxation
+        // if there are no negative cycles, the weights wont decrease
+        for(auto edge:edges){
+            
+                int u=edge[0];
+                int v=edge[1];
+                int d=edge[2];
+                
+                if(dis[u] != INF && dis[u]+d < dis[v] )
+                   return {-1};
+                 
+        
+        }
+        
+        return dis ;
+          
+        
+    }
+};
