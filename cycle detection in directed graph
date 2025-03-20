@@ -1,53 +1,42 @@
-Given a directed graph, check whether the graph contains a cycle or not. 
-Your function should return true if the given graph contains at least one cycle, else return false.
-
-
-class Solution{
-
-public:
+https://www.geeksforgeeks.org/problems/detect-cycle-in-a-directed-graph/1?page=1&category=Graph&sortBy=submissions
+    
+class Solution {
+  public:
     // Function to detect cycle in a directed graph.
-    bool isCyclic(int V, vector<int> adj[]) {
+    bool dfs(vector<vector<int>> &adj, vector<bool> &vis, vector<bool> &pathVis, int node) {
+        vis[node] = true;  // mark node as visited
+        pathVis[node] = true;  // mark node as part of the current DFS path
         
-    vector<int> vis(V , 0);
-        
-        
-        //check for all connected components
-        for(int i = 0; i < V; i++){
-            if(vis[i] == 0){
-                if(checkCycle(i,vis,adj))return true;
+        // Explore all adjacent nodes (children)
+        for(int child : adj[node]) {
+            if (!vis[child]) {  // if child hasn't been visited yet
+                if (dfs(adj, vis, pathVis, child)) {
+                    return true;  // cycle detected
+                }
+            } 
+            else if (pathVis[child]) {  // if the child is part of the current DFS path, cycle detected
+                return true;
             }
         }
-        return false;
-        
-        
-        
+
+        pathVis[node] = false;  // backtrack: unmark the current node from the recursion stack
+        return false;  // no cycle found
     }
     
-    
- bool checkCycle(int node , vector<int>&vis , vector<int> adj[]){ 
-   vis[node]=true;
-
-for(int child:adj[node]){
-
-if(vis[child]==0){
-  if(checkCycle(child,vis,adj)) return true;
-}
-
-
-//if it has already visited.
-else if(vis[child]==1)return true;
-
-}
-
-
-//trace back
-vis[node]=2;
-return false;
-
-
-
+    bool isCyclic(vector<vector<int>> &adj) {
+        int n = adj.size();  // number of nodes
+        vector<bool> vis(n, false);  // visited nodes (for marking visited during any DFS traversal)
+        vector<bool> pathVis(n, false);  // recursion stack for cycle detection
+        
+        // Perform DFS from all unvisited nodes
+        for(int i = 0; i < n; i++) {
+            if (!vis[i]) {
+                if (dfs(adj, vis, pathVis, i)) {
+                    return true;  // cycle detected
+                }
+            }
+        }
+        
+        return false;  // no cycle found
     }
-    
-    
-    
 };
