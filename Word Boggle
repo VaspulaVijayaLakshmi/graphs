@@ -1,0 +1,82 @@
+https://www.geeksforgeeks.org/problems/word-boggle4143/1?page=2&category=Graph&sortBy=submissions
+
+
+class Solution {
+public:
+
+
+    vector<int>  dx = {0, 0, 1, -1, 1, -1, -1, 1};
+    vector<int>   dy = {1, -1, 0, 0, 1, -1, 1, -1};
+
+
+    bool dfs(vector<vector<char> >& board,string word, vector<vector<bool>> &vis,int idx,int x,int y){
+        
+        
+        if(idx==word.size()) return true;
+        
+        vis[x][y]=true;
+        
+        for(int i=0;i<8;i++){
+            
+            int nx=x+dx[i];
+            int ny=y+dy[i];
+            
+            if(nx>=0 && ny>=0 && nx< board.size() && ny< board[0].size() && 
+                vis[nx][ny]==false && board[nx][ny]==word[idx] ){
+            
+                   if(dfs(board,word,vis,idx+1,nx,ny))
+                      return true;
+             }
+            
+        }
+        
+        
+        // visualise this
+        // we need to make it false so that , from next path we may
+        // come n visit this letter agan, and tht time we may have covered the words
+        // we wanated....so
+      vis[x][y]=false;    
+       return false;
+        
+    }
+
+
+
+	vector<string> wordBoggle(vector<vector<char> >& board, vector<string>& dictionary) {
+	    // Code here
+	    
+	    vector<string> res;
+	    
+	    for(auto word : dictionary){
+	        
+	        bool flag=false;
+	        vector<vector<bool>> vis(board.size(),vector<bool>(board[0].size(),false));
+	        
+	        for(int i=0;i<board.size();i++){
+	            for(int j=0;j<board[0].size();j++){
+	                
+	                
+	                if(flag)
+	                  break;
+	                
+	                if(board[i][j]==word[0]){
+	                      
+	                      if(dfs(board,word,vis,1,i,j)){
+	                           res.push_back(word);
+	                           
+	                           flag=true;
+	                           break;
+	                      }
+	                           
+	                }
+	                
+	                
+	            }
+	        }
+	        
+	    }
+	    
+	    
+	    return res;
+	}
+};
