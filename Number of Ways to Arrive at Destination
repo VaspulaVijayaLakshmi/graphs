@@ -1,0 +1,79 @@
+https://www.geeksforgeeks.org/problems/number-of-ways-to-arrive-at-destination/1?page=2&category=Graph&sortBy=submissions
+
+
+class Solution {
+  public:
+    int countPaths(int n, vector<vector<int>>& roads) {
+
+        // create adj list
+    vector<pair<int,int>> adj[n];
+        
+    
+    for(auto val : roads)
+    {
+        // u -> {v,wt}
+        adj[val[0]].push_back({val[1],val[2]});
+        adj[val[1]].push_back({val[0],val[2]});
+    }
+        
+        
+        // we just need to store wt and u
+        
+        // v i.e, all the children we cn get from adj lits
+        // in grid prblms, we need to store , u,v here we dont need
+    priority_queue<pair<long long,int>,
+    vector<pair<long long,int>>, 
+    greater<pair<long long,int>>> pq;
+                   
+        
+        vector<long long> dis(n,1e18);
+        int mod = (int)(1e9 + 7) ;
+        
+        // maintain an array to track the number of ways to reach a particular
+        // node
+        
+        vector<int> ways(n,0);
+        
+        pq.push({0,0});
+        ways[0]=1;
+        dis[0]=0;
+        
+        
+        while(!pq.empty()){
+            
+            auto front=pq.top();
+            pq.pop();
+            
+            long long wt=front.first;
+            int node=front.second;
+            
+            for(auto child : adj[node]){
+                
+                long long cwt=child.second;
+                int cnode=child.first;
+                
+                
+                if(dis[cnode] > wt+cwt){
+                    
+                    dis[cnode] = wt+cwt;
+                    pq.push({dis[cnode],cnode});
+                    ways[cnode] = ways[node] ;
+                }
+                
+                
+                else if(dis[cnode] == wt+cwt){
+                    ways[cnode] =  ( ways[cnode]+ways[node] ) %mod;
+                }
+                
+                
+            }
+        
+            
+        }
+        
+   
+        return ways[n-1]%mod;
+        
+        
+    }
+};
