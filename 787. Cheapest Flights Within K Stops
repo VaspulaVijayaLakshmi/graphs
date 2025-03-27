@@ -31,11 +31,7 @@ public:
             for(auto flight : flights){
                     adj[flight[0]].push_back({flight[1],flight[2]});
             }
-        
-        
-        // price should be cheap and only K stops
-        // PQ should be based on 
-        // prioirty_queue - price , but need to track k as well
+    
         
         priority_queue< pair<int,pair<int,int>>,
                         vector<pair<int,pair<int,int> > >,
@@ -84,3 +80,81 @@ public:
 
 
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+QUEUE IMPLEMENTATION
+
+
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
+        
+    if(src==dst) return 0;
+    
+                // build adj_list
+        vector<pair<int,int>> adj[n];
+        
+     
+            for(auto flight : flights){
+                    adj[flight[0]].push_back({flight[1],flight[2]});
+            }
+        
+        
+
+        queue<vector<int>> pq;
+    
+        vector<int> cost(n,1e9);
+        
+        // {k,cost,node}
+        pq.push({0,0,src});
+        cost[src] =0;
+        
+        
+        while(!pq.empty()){
+            
+            auto front=pq.front();
+            pq.pop();
+            
+            int u = front[2];
+            int ccost = front[1];
+            int stop = front[0];
+            
+            if(stop>K) break;
+            
+            for(auto nxt: adj[u]){
+                
+                int v= nxt.first ;
+                int ncost= nxt.second ;
+                
+                if( cost[v] > ncost+ccost && stop<=K){
+                    
+                    cost[v] = ncost+ccost;
+                    pq.push({stop+1,ncost+ccost,v});
+                }
+                
+            }
+            
+        }
+        
+        if(cost[dst]==1e9) 
+          return -1;
+          
+          return cost[dst];
+
+        
+    }
+
+
+};
+ 
