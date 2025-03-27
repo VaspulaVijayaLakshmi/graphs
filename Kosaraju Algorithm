@@ -1,0 +1,114 @@
+https://www.geeksforgeeks.org/problems/strongly-connected-components-kosarajus-algo/1
+
+class Solution {
+    
+    stack<int> stk;
+    vector<vector<int>> tadj;
+    
+
+    void dfs(vector<vector<int>> &adj,vector<bool> &vis,int node){
+        
+        vis[node] =true;
+        
+        for(int v: adj[node]){
+            
+            if(!vis[v]){
+                
+                dfs(adj,vis,v);
+                
+            }
+        }
+        
+        stk.push(node);
+    
+    }
+    
+    
+    
+    
+    void transposeGraph(vector<vector<int>> &adj){
+        
+
+        tadj.resize(adj.size());
+        
+        
+        for(int i=0;i<adj.size();i++){
+           for(auto edge : adj[i]){
+
+            tadj[edge].push_back(i);
+            
+           } 
+        
+        }
+    }
+    
+    
+    void dfsOnTransposed(vector<vector<int>> &tadj,vector<bool> &sccvs,int node){
+        
+        sccvs[node]=true;
+        
+        for(int child : tadj[node]){
+            
+            if(!sccvs[child]){
+                
+               dfsOnTransposed(tadj,sccvs,child); 
+            }
+            
+        }
+        
+    }
+    
+    
+    
+    
+  public:
+    int kosaraju(vector<vector<int>> &adj) {
+        
+        
+    // ssc1->ssc2->ssc3
+    
+    // dfs - sort by finish times(stacks)
+    // reverse edges
+    // dfs(while removing elements from  stack) - the no.of SCC=no of times dfs is called
+    
+    int n=adj.size();
+    vector<bool> vis(n,false);
+    
+    // multiple CC's
+    for(int i=0;i<n;i++){
+        
+        if(!vis[i])
+           dfs(adj,vis,0);
+    
+    }
+    
+    
+    
+    transposeGraph(adj);
+    
+    
+    
+    int SCC=0;
+    vector<bool> sccvs(n,false);
+    
+    while(!stk.empty()){
+        
+        int top= stk.top();
+            stk.pop();
+        
+        
+        if(!sccvs[top]){
+
+            dfsOnTransposed(tadj,sccvs,top);
+            SCC++;
+        }
+    
+        
+        
+    }
+    
+    return SCC;
+    
+
+    }
+};
