@@ -1,0 +1,86 @@
+// Now, if we store the elements in the priority queue with the priority 
+// given to the minimum distance first, then after a few iterations we would 
+// realize that the Algorithm will halt when the number of stops would 
+// exceed. This may result in a wrong answer as it would not allow us to
+// explore those paths which have more cost but fewer stops than the current answer.
+
+// To tackle this issue, we store the elements in terms of the minimum 
+// number of stops in the priority queue so that when the algorithm halts, we can get the minimum cost within limits.
+
+// Also, a point to note here is that do we really need a priority queue for
+// carrying out the algorithm? The answer for that is No because when we are
+// storing everything in terms of a number of stops, the stops are increasing 
+// monotonically which means that the number of sops is increasing by 1 and 
+// when we pop an element out of the queue, we are always popping the element 
+// with a lesser number of stops first. Replacing the priority queue with a simple queue will let us eliminate an extra log(N) of the complexity of insertion-deletion in a priority queue which would in turn make our algorithm a lot faster.
+
+
+
+
+
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
+        
+    if(src==dst) return 0;
+        
+        // build adj_list
+        vector<pair<int,int>> adj[n];
+        
+     
+            for(auto flight : flights){
+                    adj[flight[0]].push_back({flight[1],flight[2]});
+            }
+        
+        
+        // price should be cheap and only K stops
+        // PQ should be based on 
+        // prioirty_queue - price , but need to track k as well
+        
+        priority_queue< pair<int,pair<int,int>>,
+                        vector<pair<int,pair<int,int> > >,
+                        greater<pair<int,pair<int,int> > > > pq;
+        
+        
+        vector<int> cost(n,1e9);
+        
+        // {k,cost,node}
+        pq.push({0,{0,src}});
+        cost[src] =0;
+        
+        
+        while(!pq.empty()){
+            
+            auto front=pq.top();
+            pq.pop();
+            
+            int u = front.second.second;
+            int ccost = front.second.first;
+            int stop = front.first;
+            
+            if(stop>K) break;
+            
+            for(auto nxt: adj[u]){
+                
+                int v= nxt.first ;
+                int ncost= nxt.second ;
+                
+                if( cost[v] > ncost+ccost && stop<=K){
+                    
+                    cost[v] = ncost+ccost;
+                    pq.push({stop+1,{ncost+ccost,v}});
+                }
+                
+            }
+            
+        }
+        
+        if(cost[dst]==1e9) 
+          return -1;
+          
+          return cost[dst];
+        
+    }
+
+
+};
