@@ -1,0 +1,62 @@
+
+class Solution {
+  public:
+    int MinimumEffort(int rows, int cols, vector<vector<int>> &heights) {
+        
+        // pririty queue - effort,(x,y)
+        
+        
+        
+          priority_queue<pair<int, pair<int, int>>, 
+                      vector<pair<int, pair<int, int>>>, 
+                      greater<pair<int, pair<int, int>>>> pq;
+        
+        vector<vector<int>> dis(rows, vector<int>(cols, 1e9)); 
+        
+        pq.push({0,{0,0}});
+        dis[0][0]=0;
+        
+        
+        vector<int> dx={0,0,1,-1};
+        vector<int> dy={-1,1,0,0};
+        
+        
+        while(!pq.empty()){
+            
+            auto front = pq.top();
+            pq.pop();
+            
+            
+            int x=front.second.first;
+            int y=front.second.second;
+            int effort=front.first;
+            
+            
+            for(int i=0;i<4;i++){
+                
+                int nx = x+ dx[i];
+                int ny = y+ dy[i];
+                
+                
+                if(nx>=0 && ny>=0 && nx<rows && ny<cols){
+                    
+                    int ndis = abs( heights[nx][ny] - heights[x][y] );
+                    
+                    ndis = max(ndis,effort);
+                
+                    if( dis[nx][ny] > ndis ){
+                   
+                        dis[nx][ny]=ndis;
+                        pq.push({ndis,{nx,ny}});
+                    
+                    }
+                
+                }
+                
+            }
+            
+        }
+        
+        return dis[rows-1][cols-1];
+    }
+};
