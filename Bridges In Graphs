@@ -1,0 +1,98 @@
+Bridge edge in a graph
+https://www.geeksforgeeks.org/problems/bridge-edge-in-graph/1?page=3&category=Graph&sortBy=submissions
+
+
+class Solution
+{
+  
+    
+     vector<int> ins;
+        vector<int> low;
+        
+        
+	public:
+	
+    int dfs(vector<int> adj[], vector<bool> &vis, int node, int par, int timer, int c, int d ){
+	    
+	    vis[node]=true;
+	    ins[node]=low[node] = timer++;
+	    
+	    
+	    for(int child:adj[node]){
+	        
+	       // if child is par do nothing
+	        if(child==par) continue;
+	        
+	       // if child is visited and not parent
+	       //then this a back edge
+	        if(vis[child]){
+	            
+	            low[node]=min(low[node],low[child]);
+	        }
+	        
+	        
+	       // if its not visited do its a forward edge
+	       //so it could potential bridge...
+	        if(!vis[child]){
+	            
+	            
+	           // do dfs and finish all nodes while coming back we will check 
+	           //if the edge is bridge or not
+	           if(dfs(adj,vis,child,node,timer,c,d)) return 1;
+	           
+	           
+	           //dfs is finshed, now i came back to parent-child
+	           //now i have to check if i can remove this edge , if yes, then 
+	           //is there any path tat i can reach this node to
+	           
+	           //if( low[child] < tin[node])
+	           //this means if a child can be reached earlier then its parent then
+	           //there is certainly a path to child other than this parent
+	           
+	           //so we need to neagte this stmt to say there is no path
+	           //if there is no path, then its a bridge
+	              
+	            if( low[child] > ins[node]) {
+	                
+	                if( (child==c && node==d) || child==d && node==c)
+	                 return 1;
+	            } 
+	              
+
+                //Prepare parent for its parent node, to check the condition of bridge 
+	             low[node]=min(low[node],low[child]);
+	            
+	           
+	        }
+	       
+	    }
+	    return 0;
+	    
+	    
+	}
+	
+	
+	
+    //Function to find if the given edge is a bridge in graph.
+    int isBridge(int V, vector<int> adj[], int c, int d) 
+    {
+
+        
+         vector<bool> vis(V,false);
+         ins.resize(V, -1);
+        low.resize(V, -1);
+        
+        
+        for(int i=0;i<V;i++){
+            
+            if(!vis[i])
+               if(dfs(adj,vis,i,-1,0,c,d))
+                return 1;
+        
+        }
+    
+        
+        return 0;
+        
+    }
+};
