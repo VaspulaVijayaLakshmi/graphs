@@ -1,0 +1,61 @@
+class Solution {
+public:
+    int minMutation(string startGene, string endGene, vector<string>& bank) {
+        
+        queue<string> q;
+        unordered_map<string, bool> vis;
+        unordered_set<string> bankSet(bank.begin(), bank.end());
+
+        vector<char> GENE= {'A','C','G','T'};
+
+        q.push(startGene);
+        vis[startGene] = true;
+
+        // also mark as visited if u saw tht string already, 
+        // to avoid recomputing and memory
+
+        int mutations =0;
+
+        while(!q.empty()){
+
+            int size = q.size();
+
+            while(size--){
+
+                string gene = q.front();
+                q.pop();
+
+                if(gene == endGene) return mutations;
+
+// each word A,C,G,T -> would replace each word, Of the string
+                for(int i=0;i<4;i++){
+                    for(int j=0;j<8;j++){
+
+                     string ngene=gene;
+                     ngene[j] = GENE[i];
+
+                    if( !vis[ngene] && bankSet.find(ngene) != bankSet.end()){
+
+                        vis[ngene] =true;
+                        q.push({ngene});
+                    }
+                }
+            }
+            }
+
+            mutations++;
+
+
+        }
+
+        return -1;
+       
+    }
+};
+
+
+//                     AACCGGTT 
+
+//   AACCGGT     CACCGGTT    GACCGGTT    TACCGGTT - 
+//   check the bank each time if its present in queue, if yes, push to queue.
+
