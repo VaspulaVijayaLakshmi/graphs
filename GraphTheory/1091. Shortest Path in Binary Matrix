@@ -1,0 +1,60 @@
+class Solution {
+public:
+
+       
+     bool isValid(int i,int j,int n)
+    {
+        if(i==n||j==n||j<0||i<0)
+            return false;
+        
+        return true;
+    }
+
+
+    vector<pair<int,int>> dir = {{1,0},{-1,0},{0,1},{0,-1},
+                         {-1,-1},{-1,1},{1,1},{1,-1}};
+
+
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        
+        int rows=grid.size();
+        int col = grid[0].size();
+
+        if (grid[0][0] == 1 || grid[rows-1][col-1] == 1) 
+            return -1;
+
+        vector<vector<int>> dis(rows,vector<int>(col,-1));
+
+        queue<pair<int,int>> q;
+        q.push({0,0});
+        dis[0][0]=1;
+
+        while(!q.empty()){
+
+            int sz=q.size();
+
+           while(sz--){
+
+            auto front = q.front();
+            q.pop();
+
+            for(int i=0;i<8;i++){
+
+                int nx = front.first + dir[i].first ;
+                int ny = front.second + dir[i].second ;
+
+                if(isValid(nx,ny,rows) && grid[nx][ny]==0 && dis[nx][ny] == -1){
+
+                    dis[nx][ny] = 1 + dis[front.first][front.second];
+                    q.push({nx,ny});
+                }
+            }
+        }
+        }
+
+        return dis[rows-1][col-1];
+
+           
+}
+
+};
