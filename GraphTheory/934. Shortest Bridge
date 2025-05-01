@@ -1,0 +1,139 @@
+class Solution {
+public:
+    
+    int dx[4]={-1,0,1,0};
+    int dy[4]={0,1,0,-1};
+
+
+    bool isValid(vector<vector<int>>& grid,int r,int c){
+
+        int n=grid.size();
+         return r >= 0 && c >= 0 && r < n && c < n && grid[r][c] == 1; 
+    }
+
+
+
+    void dfs(vector<vector<int>>& grid,int r,int c){
+
+        grid[r][c] =2;
+
+        for(int i=0;i<4;i++){
+
+            int nx = dx[i] + r;
+            int ny = dy[i] + c;
+
+            if(isValid(grid,nx,ny)){
+                dfs(grid,nx,ny);
+            }
+        }
+    }
+
+
+    int bridges(vector<vector<int>>& grid){
+
+        queue<pair<int,int>> q;
+
+        int n= grid.size();
+        int flips=0;
+        
+        // multisource bfs
+        for(int i=0;i<n;i++){
+           for(int j=0;j<n;j++){
+             
+              if(grid[i][j]==2){
+                 q.push({i,j});
+              }
+           }
+         }
+
+         while(!q.empty()){
+
+            int size = q.size();
+            while(size--){
+
+                auto front = q.front();
+                q.pop();
+
+                int x = front.first ;
+                int y = front.second ;
+
+                for(int i=0;i<4;i++){
+
+                    int nx = x  + dx[i];
+                    int ny = y + dy[i];
+
+                    if(nx>=0 && ny>=0 && nx<n && ny<n && grid[nx][ny]!=2){
+
+                        if(grid[nx][ny] == 1) return flips;
+
+                        grid[nx][ny] = 2;
+                        q.push({nx,ny});
+
+                    }
+
+                }
+
+            }
+
+               flips++;
+         }
+
+         return flips;
+
+    }
+        
+    int shortestBridge(vector<vector<int>>& grid) {
+
+        int n=grid.size();
+         bool found = false;
+        
+        // DFS to cover first Island
+        for(int i=0;i<n;i++){
+          for(int j=0;j<n;j++){
+
+            if(found) break;
+
+            if(grid[i][j]==1){
+             dfs(grid,i,j);
+             found=true;
+            }
+   
+        }
+            if(found) break;
+        }
+
+
+        // 2nd BFS
+        return bridges(grid);  
+
+    }
+};
+
+
+
+// there are 2 islands
+
+
+// [0,1,0]
+// [0,0,0]
+// [0,0,1]
+
+// multisource bfs
+
+// we need to 1 - 1 of different islands
+
+// we cant connect 0 to nearest 1s, because we may be sure whch isalnd it
+// is
+
+
+// good APPROACH  - BFS + DFS
+
+// with DFS cover 1 island and change to 2s
+
+// push all the 2s into queue
+// multisource bfs to find nearest 1
+
+
+
+
+
