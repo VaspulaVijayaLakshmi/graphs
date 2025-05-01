@@ -1,0 +1,61 @@
+class Solution {
+public:
+    
+     bool isvalid(int i,int j,int m,int n)
+    {
+        if(i==m||j==n||j<0||i<0)
+            return false;
+        
+        return true;
+    }
+    
+    
+    
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        
+        queue<pair<int,int>> q;
+        
+        int n=mat.size();
+        int m=mat[0].size();
+        
+        vector<vector<int>> dir={{-1,0},{0,1},{1,0},{0,-1}};
+        vector<vector<int>> res(n,vector<int>(m,-1));
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                
+                if(mat[i][j]==0){
+                     q.push({i,j});
+                     res[i][j]=0;
+                }
+            }
+        }
+        
+        
+        
+        while(!q.empty()){
+            
+            auto front=q.front();
+            q.pop();
+            
+             int x=front.first;
+             int y=front.second;
+            
+            for(int i=0;i<4;i++){
+                
+                int n_x=dir[i][0]+x;
+                int n_y=dir[i][1]+y;
+            
+                if(isvalid(n_x,n_y,n,m) && res[n_x][n_y]==-1){
+                        
+                    q.push({n_x,n_y});
+                    res[n_x][n_y]=res[x][y]+1;
+                }
+            }
+        }
+        
+        return res;
+        
+        
+    }
+};
