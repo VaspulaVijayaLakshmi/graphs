@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool canReach(vector<int>& arr, int start) {
+
+        queue<int> q;
+        vector<bool> vis(arr.size(),false);
+
+        q.push(start);
+        vis[start] =true;
+
+        while(!q.empty()){
+
+            int front = q.front();
+            q.pop();
+
+            if(arr[front]==0) return true;
+
+            int nbefore = arr[front] + front  ;
+            int nafter =  front - arr[front]  ;
+
+            if(nbefore>=0 && nbefore<arr.size() && !vis[nbefore] ){
+                vis[nbefore] = true;
+              q.push(nbefore);
+            }
+
+            if( nafter>=0 && nafter<arr.size() && !vis[nafter]){
+                vis[nafter] = true;
+              q.push(nafter); 
+            }
+
+        }
+
+        return false;
+        
+    }
+};
