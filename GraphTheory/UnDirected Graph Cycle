@@ -26,8 +26,13 @@ class Solution {
         
         for(int i=0;i<edges.size();i++){
             
-            adj[edges[i][0]].push_back(edges[i][1]);
-            adj[edges[i][1]].push_back(edges[i][0]);
+            int u=edges[i][0];
+            int v=edges[i][1];
+            
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+            
+           
         }
         
         vector<bool> vis(V,false);
@@ -44,19 +49,3 @@ class Solution {
 };
 
 
-
-
-
-// Key DIffference
-
-// Given are the edges, not adjnceny list
-
-// edges = [[0,1][0,2]]
-
-
-// means there is an edge 0-1 and another edge [0-2]
-
-// adj list means - [[0,1],[0,2]]
-
-// 0 - 0 and 1
-// 1 - 0 and 2
