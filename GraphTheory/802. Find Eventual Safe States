@@ -1,0 +1,52 @@
+class Solution {
+public:
+
+     bool dfs(vector<vector<int>> &adj, vector<bool> &vis, vector<bool> &pathVis,int node){
+    
+        vis[node]=true;
+        pathVis[node]=true;
+        
+        for(int child: adj[node]){
+            
+            if(!vis[child]){
+                if(dfs(adj,vis,pathVis,child)) 
+                   return true;
+            }       
+        
+            else if (pathVis[child])
+             return true;
+            
+        }
+        
+        pathVis[node]=false;
+        return false;
+        
+    }
+    
+
+
+     
+    vector<int> eventualSafeNodes(vector<vector<int>>&adj) {
+
+        int n=adj.size();
+        vector<bool>  vis(n,false), pathVis(n,false);
+
+        vector<int> safeNodes;
+        
+        for(int i=0;i<n;i++){
+            if(!vis[i])
+             dfs(adj,vis,pathVis,i);
+        }
+
+
+    //    #once we find cycle we will return true and exit the dfs 
+    //    hence we dont restore pathVis to false
+
+    //  this is imp to keep in mind
+        for(int i=0;i<n;i++)
+          if(!pathVis[i])
+            safeNodes.push_back(i);
+
+        return safeNodes;
+    }
+};
