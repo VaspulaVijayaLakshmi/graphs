@@ -1,0 +1,54 @@
+// [a,b] => take a before b
+
+
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        
+      vector<int> res;
+
+      vector<vector<int>> adj(numCourses);
+      vector<int> outdegree(numCourses,0);
+
+      for(auto p : prerequisites){
+          adj[p[1]].push_back(p[0]);
+          outdegree[p[0]] ++;
+      }
+
+       
+      queue<int> q;
+
+      for(int i=0;i<numCourses;i++){
+        if(outdegree[i] ==0)
+            q.push(i);
+      } 
+
+
+      while(!q.empty()){
+         
+         int front = q.front();
+         res.push_back(front);
+         q.pop();
+
+         for(int child : adj[front]){
+
+            outdegree[child] --;
+            if(outdegree[child]==0)
+                q.push(child);        
+
+         }
+
+      }
+
+      return res.size() == numCourses ? res : vector<int>();
+    }
+};
+
+
+// topo sort 
+// first u need to finsish all the courses whose outdegree is 0
+
+// if outdegree is 0, we can finish tht off and remove, so tht out deg
+// of the next nodes decreses
+// and we continue
+
