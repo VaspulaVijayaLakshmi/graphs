@@ -1,0 +1,52 @@
+
+//use a directed graph 
+//and count the indegree and outdegree of each node
+//the node that has indegree == n-1 ==> everyon trusts that node
+//but need to check that he dont trust anyone =>outdegree should be 0
+
+
+class Solution {
+public:
+    int findJudge(int n, vector<vector<int>>& trust) {
+
+        vector<int> indegree(n+1,0);
+        vector<int> outdegree(n+1,0);
+
+        for(int i=0;i<trust.size();i++){
+
+            int u = trust[i][0];
+            int v = trust[i][1];
+
+            indegree[v]++;
+            outdegree[u]++;
+        }
+
+        for(int i=1;i<=n;i++){
+
+            if(indegree[i]==n-1 && outdegree[i]==0){
+             return i;
+            }
+        }
+       
+       return -1;
+
+    }
+};
+
+
+
+// the judge trsuts everybody judge -> none 
+
+// everyone trusts judge all-> judge
+
+
+// means there is a node , where , indegree == no.of vertices
+// and outdegree =0;
+
+
+// trust[i] = [ai, bi]
+
+// a-> trusts -> b
+
+// if a -> b means. indegree[b]++ and outdegree[a]++ 
+
