@@ -1,0 +1,42 @@
+class Solution {
+public:
+
+    bool isBipartite(vector<vector<int>>& graph,int node,int col,
+                     vector<int> &color,  vector<bool> &vis){
+
+        vis[node] = true;
+        color[node] = col;
+
+        for(int child : graph[node]){
+
+            if(!vis[child]){
+               if(!isBipartite(graph,child,col^1,color,vis))
+                   return false ;
+            }
+
+            else if(color[node] == color[child]) return false;
+        }
+
+        return true;
+
+    }
+    
+
+    bool isBipartite(vector<vector<int>>& graph) {
+
+        vector<int> col(graph.size());
+        vector<bool> vis(graph.size(),false);
+
+        // there could be mutiple components(CC)
+
+        for(int i=0;i<graph.size();i++){
+            if(!vis[i]){
+                if(!isBipartite(graph,i,0,col,vis))
+                 return false;
+            }
+        }
+
+        return true;
+        
+    }
+};
