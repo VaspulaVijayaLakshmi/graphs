@@ -1,0 +1,63 @@
+class Solution {
+public:
+
+    vector<int> findSmallestSetOfVertices(int n, vector<vector<int>>& edges) {
+        
+        vector<int> indegree(n,0);
+        vector<int> res;
+
+        // build adj graph
+        for(int i=0;i<edges.size();i++){
+            indegree[edges[i][1]]++;
+        }
+
+
+        for(int i=0;i<n;i++){
+
+            if(indegree[i] == 0){
+                res.push_back(i);
+            }
+        }
+      return res;
+
+    }
+};
+
+
+// for each node we need to find, the nodes tht r reachable from it
+
+
+// 0 -> 1 2  
+// 1 -> 
+// 2 -> 5
+// 3 -> 4 
+// 4 -> 2
+// 5 -> 
+
+// ill cal dfs on 0 -> 0->1->2->5 - (4nodes)
+
+// nxt dfs call , 3 -> 4 - (2 nodes) 
+
+// all 6 nodes covered;
+
+
+// [1,2],
+// [1,0],
+// [0,2]
+
+
+// 0->2
+// 1->2,0
+
+
+
+// which ever node's outdegree is high we can call tht first, since 
+// tht will cover most of the nodes first
+// then we can call 2nd highest outdegree or so on
+
+
+// but if u observe carefully
+
+
+// if the indegree is present then it can be reached by other node
+// if its indegree - 0 , then it needs to go to some other node
