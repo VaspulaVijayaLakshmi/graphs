@@ -1,1 +1,96 @@
+// class Solution {
+// public:
 
+//    vector<int> res;
+//    vector<int> dfs(vector<vector<int>>& adj, string &labels,int node,int par){
+
+//      vector<int> ans(26,0); 
+
+//     //  each node would have atmax 2 children only, so we need to add the
+//     // value of children node to parent, after each child
+//      for(int child : adj[node]){
+
+//         if(child!=par){
+            
+//             vector<int> cVec = dfs(adj,labels,child,node);
+//             for(int i=0;i<26;i++)
+//               ans[i] +=cVec[i];
+            
+//         }
+//      }
+
+
+// // after we have traverse,
+// // increment the value of curr node's label index -> +1
+
+// // becaus lets say all children are added with respectives label, now we need to add
+// // the curr label to tht idx
+
+
+// // which is the label idx - out of 26 alphabets -> node's - label
+// // how to get a nodes's label - 
+
+// //  update the curr nodeId's value in res.
+// // +1 because im considring curr root also
+
+// // lets say nodelabel of curr node - c
+//     int nodeLabel = labels[node];
+
+//     // now we need to idx - c - 3 idx
+
+//     int nodeIdx = nodeLabel - 'a' ;
+//      ans[nodeIdx]++;
+
+//     res[node] =  ans[nodeIdx];
+//         return ans; 
+
+//      }
+    
+
+//     vector<int> countSubTrees(int n, vector<vector<int>>& edges, string labels) {
+        
+
+//         vector<vector<int>> adj(n);
+//     //    build Graph   
+//      for(int i=0;i<edges.size();i++){
+
+//         adj[edges[i][0]].push_back(edges[i][1]);
+//         adj[edges[i][1]].push_back(edges[i][0]);
+//      }
+
+//      res.resize(n);
+//      dfs(edges,labels,0,-1);
+//      return res;
+
+
+//     }
+// };
+
+
+// Each node lets mantain, 
+// the alphabets list fro 0-26 and keep increenting it going up
+
+
+    //                 0 -a [a-2,b-1,c-1,e-1,d-1]
+
+    //          1-b                       2-a
+    // [b-1,d-1,c-1]                          [e-1,d-1,a-1]
+ 
+    //    4-d        5-c                3-e       6-d            
+    //   [d -1]     [c-1]               [e-1]     [d-1]
+
+
+
+// 0 - 1 , 2
+// 1- 0 , 4 , 5
+// 2- 3 , 6
+// 3 - {}
+// 4 - {}
+// 5 - {} 
+// 6 - {}
+
+//   lets map - abaedcd 
+//       node 0 - a
+//       node 1 - b
+//       node 2 - a
+//       ...
