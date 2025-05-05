@@ -3,72 +3,82 @@ public:
 
    double dfs(unordered_map<string,vector<pair<string,double>>> &adj,unordered_map<string, bool>  &vis,string s,string e){
 
-      vis[s]=true;
+          if(s==e) return 1.0;
 
-      if(s==e)
-      return 1.0;
+          vis[s] = true;
+          for(auto child : adj[s]){
 
-      for(auto child : adj[s]){
-        
-        if(!vis[child.first]){
-                
-           double res= dfs(adj,vis,child.first,e);
+            string alp = child.first;
+            double val = child.second;
 
-            if(res!=-1.0)
-              return  res*child.second;
-        
-      }
-      }
+            if(!vis[alp]){
+              double res =  dfs(adj,vis,alp,e);
 
-       return -1.0;  
+it could be poosible tht s and e are both present but r not connected to each othr...once we traverse all children and we didnt encounter 
+e, then return -1, if we did excounter e, then resturen the resuklt here itself
 
+              if(res!=-1)
+                 return res*val;
+            }
+            
+          }
+
+          return -1.0;
+           
       }
 
    
 
 
-    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
-        
-        unordered_map<string, vector<pair<string,double>>> adj;
-        int n = equations.size();
-     
-        for(int i=0;i<n;i++){
-            
-            string a = equations[i][0];
-            string b = equations[i][1];
+    vector<double> calcEquation(vector<vector<string>>& eq, vector<double>& values, vector<vector<string>>& queries) {
+               
+       unordered_map<string, vector<pair<string,double>> > adj;
+
+        for(int i=0;i<eq.size();i++){
+
+            string x = eq[i][0];
+            string y = eq[i][1];
 
             double op = values[i];
 
-            adj[a].push_back({b,op});
-            adj[b].push_back({a,1/op}); 
-
+            adj[x].push_back({y,op});
+            adj[y].push_back({x,1/op});
         }
 
-        
-         vector<double> result;
-
-
+// queries
+        vector<double> res; 
         for(int i=0;i<queries.size();i++){
 
-             unordered_map<string,bool> vis;
+            unordered_map<string,bool> vis;
+             
+             string x =queries[i][0];
+             string y =queries[i][1];
 
-            string strt = queries[i][0]; 
-            string end  = queries[i][1];
+            if(adj.find(x) == adj.end() || adj.find(y) == adj.end())
+               res.push_back(-1);
 
-            if (adj.find(strt) == adj.end() || adj.find(end) == adj.end())  
-              result.push_back(-1.0); 
-
-            else{
-            double res= dfs(adj,vis,strt,end);
-             result.push_back(res) ;
-            }
-
+            else
+             res.push_back(dfs(adj,vis,x,y));
+         
         }
 
-         return result;        
-        
+        return res;
+
     }
 };
+
+
+// I need data in the format of "a" -> {"b",1.3} , {"c", 2}.....
+
+// pair<string, pair< string,double>>
+
+// if i take adj vector, the prblm is 
+
+// "a"->"e" , Instead of searching but "e" is not present only
+
+// so better to take unordered map
+
+
 
 
 // few things to keep in mind
@@ -151,3 +161,5 @@ public:
 
 
 //     and so on......
+
+
