@@ -1,0 +1,65 @@
+class Solution {
+public:
+
+    vector<int> dx = {1,-1,0,0};
+    vector<int> dy = {0,0,1,-1};
+
+    int swimInWater(vector<vector<int>>& grid) {
+
+        int n = grid.size();
+
+       priority_queue< pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>> > q;
+    //    time, x,y
+       q.push({grid[0][0], {0,0}});
+
+        vector<vector<int>> dis(n,vector<int>(n,INT_MAX));
+        dis[0][0] = grid[0];
+
+        while(!q.empty()){
+
+            int r = q.top().second.first;
+            int c = q.top().second.second;
+            int time = q.top().first;
+            q.pop();
+
+            if(r == n-1 &&  c == n-1)
+              return time;
+
+            for(int i=0;i<4;i++){
+               
+               // isValid
+               int nr = r + dx[i];
+               int nc = c + dy[i];
+
+               if(nr>=0 && nc>=0 && nr<n && nc<n ){
+
+                // new elevation would be the max time
+                // here instead of newelevation = time+grid[][]....
+                // like we do normally we are are doing max
+                int newElevation = max(time, grid[nr][nc]);
+
+                if(newElevation < dis[nr][nc]){
+
+                    dis[nr][nc] = newElevation;
+                    q.push({newElevation, {nr,nc}});
+
+                }
+
+               }     
+        
+            }
+
+        }
+
+        return 0;
+        
+    }
+};
+
+
+
+// we can move to next grid if n only if the next sq is atmost
+// t .
+
+
+// dijskta
