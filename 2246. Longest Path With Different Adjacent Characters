@@ -1,0 +1,105 @@
+class Solution {
+public:
+   int maxLen=0;
+
+    int dfs(vector<vector<int>> &adj,string &s,int node, int par){
+
+// this variable contains, the left tree+substree len
+      
+      int max1=0, max2=0;
+      for(int child: adj[node]){
+
+        if(child==par) continue;
+
+        // this calucates each Leftree len and right Tree len
+        int len = dfs(adj,s,child,node);
+
+        if(s[child] == s[node]) continue;
+
+        // update top two lengths, there could be many children for graph, but we can atmost consider only 2 child paths 
+            if (len > max1) {
+                max2 = max1;
+                max1 = len;
+            } 
+            
+            
+            else if (len > max2) {
+                max2 = len;
+            }
+
+      }
+
+      // update answer for the path passing through this node
+        maxLen = max(maxLen, max1 + max2 + 1);
+
+        // return longest path extending upward
+        return max1 + 1;
+    
+    }
+
+
+
+    int longestPath(vector<int>& parent, string s) {
+
+        // build Graph
+        vector<vector<int>> adj(parent.size());
+
+
+        // parent arr uses -1 , so be careful
+        for(int i=1;i<parent.size();i++){
+
+            adj[parent[i]].push_back(i);
+              adj[i].push_back(parent[i]); 
+        }
+
+         // Start DFS from node 0 (or any root node)
+        dfs(adj, s, 0, -1);
+
+        // Return the maximum length found
+        return maxLen;
+
+
+
+    }
+};
+
+// parent array is given.  
+
+// tht means build a graph outta this
+
+// 0's par -1
+
+// 1'spar is 0
+// tht means adj[par[i]].push_back(i)
+
+// -> adj[par[1]].push_back(1)
+// -> adj[0] -> 1
+// ...
+
+// now each nodeId - each s[i]
+
+
+// this prblm is like max Path sum
+
+// at each node we need to consider LST, RST , LST + RST
+
+
+// alternating labels.
+
+
+// leaf return 1
+
+
+//                    0(a) a==a (RST =0 && LST = 2) +1 =3
+
+
+//               2(a)                1(b)   
+//          a!=e  a!=c             b!=c     b=b (so RST =0)
+//          (max(2,2,1+(1+1)))      max(2,0....) = 2
+
+//            5(e)               3(c)      4(b)
+//             1                  1.         1
+
+
+
+// so at 2 we have 3 and we return max(LST,RST)
