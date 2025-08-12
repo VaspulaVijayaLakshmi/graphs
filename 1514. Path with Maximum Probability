@@ -1,0 +1,79 @@
+//TLE
+// class Solution {
+// public:
+//     double maxProb = 0.0;
+
+//     void dfs(int node, int end, vector<vector<pair<int,double>>>& adj,
+//              vector<bool>& visited, double prob) {
+
+//         if (node == end) {
+//             maxProb = max(maxProb, prob);
+//             return;
+//         }
+
+//         visited[node] = true;
+
+//         for (auto& [next, edgeProb] : adj[node]) {
+//             if (!visited[next] && prob * edgeProb > maxProb) { 
+//                 // prune if multiplying will never beat current max
+//                 dfs(next, end, adj, visited, prob * edgeProb);
+//             }
+//         }
+
+//         visited[node] = false; // backtrack
+//     }
+
+//     double maxProbability(int n, vector<vector<int>>& edges,
+//                           vector<double>& succProb,
+//                           int start, int end) {
+
+//         vector<vector<pair<int,double>>> adj(n);
+//         for (int i = 0; i < edges.size(); i++) {
+//             int u = edges[i][0], v = edges[i][1];
+//             double p = succProb[i];
+//             adj[u].push_back({v, p});
+//             adj[v].push_back({u, p});
+//         }
+
+//         vector<bool> visited(n, false);
+//         dfs(start, end, adj, visited, 1.0);
+
+//         return maxProb;
+//     }
+// };
+
+
+// We are given a graph with weighted edges representing success probabilities. The goal is to find a path from the start node to the end node such that the product of success probabilities along the path is maximized.
+
+// This is a variation of Dijkstra’s algorithm, but instead of minimizing distances, we maximize the probability product.
+
+
+class Solution {
+public:
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) {
+        vector<vector<pair<int, double>>> graph(n);
+        for (int i = 0, n = edges.size(); i < n; ++i) {
+            int u = edges[i][0], v = edges[i][1];
+            double p = succProb[i];
+            graph[u].push_back({v, p});
+            graph[v].push_back({u, p});
+        }
+        vector<double> prob(n, 0.0);
+        prob[start] = 1.0;
+        priority_queue<pair<double, int>> pq;
+        pq.push({1.0, start});
+        while (!pq.empty()) {
+            auto [p, node] = pq.top(); pq.pop();
+            if (node == end) return p;
+            if (p < prob[node]) continue;
+            for (auto& [next, edgeP] : graph[node]) {
+                double newP = p * edgeP;
+                if (newP > prob[next]) {
+                    prob[next] = newP;
+                    pq.push({newP, next});
+                }
+            }
+        }
+        return 0.0;
+    }
+};
