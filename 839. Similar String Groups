@@ -1,0 +1,62 @@
+struct DSU{
+    vector<int> parent,size;
+    DSU(int n){
+        parent.resize(n+1);
+        size.resize(n+1,1);
+        for(int i=0;i<=n;i++) parent[i]=i;
+    }
+    int findparent(int u){
+        if(u==parent[u]) return u;
+        return parent[u]=findparent(parent[u]);
+    }
+    void unionsize(int u,int v){
+        int pu=findparent(u);
+        int pv=findparent(v);
+        if(pu==pv) return;
+        if(size[pu]<size[pv]){
+            parent[pu]=pv;
+            size[pv] += size[pu];
+        }else{
+            parent[pv]=pu;
+            size[pu] += size[pv];
+        }
+    }
+};
+class Solution {
+public:
+    
+    bool similar(string &s1,string &s2){
+        int m=s1.size();
+        int diff=0; // if the charachters of word are diffrent at two places only its swappable
+        for(int i=0;i<m;i++){
+            if(s1[i]!=s2[i]) diff++;
+        }
+        return (diff==2 || diff==0);
+    }
+    int numSimilarGroups(vector<string>& strs) {
+        
+        //no of compoennts woulkd be ==no of strs first
+        int n=strs.size();
+        DSU dsu(n);
+       
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                if(similar(strs[i],strs[j])) dsu.unionsize(i,j);
+            }
+        }
+
+
+        unordered_set<int> groups;
+        
+        //now out of all the strings find parent sof each str and put it in hashmap to see how may companents r formed
+        for(int i=0;i<n;i++) groups.insert(dsu.findparent(i));
+        return groups.size();
+    }
+};
+
+// DSU
+
+//compare 2 strings
+
+// freq of 2 chars should match
+// they need to be only 1 swap away
