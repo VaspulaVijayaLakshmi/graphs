@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> findSmallestSetOfVertices(int n, vector<vector<int>>& edges) {
+        vector<int> indegree(n, 0);
+
+        for (auto &e : edges) {
+            indegree[e[1]]++;
+        }
+
+        vector<int> result;
+        for (int i = 0; i < n; i++) {
+            if (indegree[i] == 0) result.push_back(i);
+        }
+
+        return result;
+    }
+};
+
+
+
+// MIn, no of vertices needed are:
+// those whose indegree - 0
+
+// because nodes whose indegree is >1, can be reache dthrowugh node, but 
+// nodes whose indegree is - 0 cannot be reached from any nodes
