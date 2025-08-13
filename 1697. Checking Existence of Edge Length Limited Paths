@@ -1,0 +1,106 @@
+
+
+vector <int> parent(100005,-1);
+
+class Solution {
+public:
+
+    int find(int x){
+        if(parent[x]==x) return x;
+        return parent[x] = find(parent[x]);
+    }
+
+
+    void unionfun(int a, int b){
+        a = find(a);
+        b = find(b);
+        
+        if(a!=b) parent[b] = a;
+    }
+
+
+    vector<bool> distanceLimitedPathsExist(int n, vector<vector<int>>& edges, vector<vector<int>>& queries) {
+
+        for(int i = 0; i<=n; i++) parent[i] = i;
+
+          // Sorting the edges array based on dist of each pair of node. 
+        sort(edges.begin(),edges.end(),[](vector<int>&a, vector<int>&b){
+            if(a[2]<b[2]) return true;
+            return false;
+        });
+
+
+        // We will need the indices of query elements coz after sorting, 
+        //the  order will change. 
+		// So we push the index in the same element vector of query.
+
+        //eg : if each query is like this, it will be turned into
+        // [0,1,2,0] - last one is index
+        for(int i = 0; i<queries.size(); i++) 
+          queries[i].push_back(i);
+
+
+        // Sorting queries based on limits. 
+        sort(queries.begin(),queries.end(),[](vector<int>&a,vector<int>&b){
+            if(a[2]<b[2]) return true;
+            return false;
+        });
+
+
+        vector <bool> ans(queries.size(),false);
+        int idx = 0;
+
+        for(int i = 0; i<queries.size(); i++){
+
+            // Here we loop on edges vector and join the 
+            //two nodes having dist < curr_limit.
+			while(idx<edges.size() and edges[idx][2]<queries[i][2]){
+                unionfun(edges[idx][0],edges[idx][1]);
+                idx++;
+            }
+
+
+            // Given an array queries, where queries[j] = [pj, qj, limitj], your task is to determine for each queries[j] whether there is a path between pj and qj such that each edge on the path has a distance strictly less than limitj . 
+            //so i am doing at runtime, in identitifying if there are edges
+            // less than limit andconnecting if yes and in the end checking 
+            //if their parents are same
+
+
+
+			// If the two nodes of current query has same godfather, 
+            //we set this queries ans as true
+            if(find(parent[queries[i][0]]) == find(parent[queries[i][1]]))
+             ans[queries[i][3]] = true;
+        }
+
+        return ans;
+        
+    }
+};
+
+
+// dsu
+
+// Create a DSU to track connected components
+
+// Add index to queries to remember original order - since we are sorting the queries based on limits and sorting will change order, but in resuktant array we need original order.
+
+// Sort both queries and edges by weight/limit (ascending)
+
+
+// The clever part is sorting queries by limit - this means we only need to process each edge once, and we can reuse the same DSU state for multiple queries.
+
+
+// For each query in sorted order:
+// Add all edges with weight < query limit to DSU
+// Check if query nodes are in same component
+
+
+
+
+
+
+// https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths/solutions/5526432/c-dsu-solution/
+
+
+// https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths/solutions/2234460/c-disjoin-set-union/
