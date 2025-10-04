@@ -34,3 +34,47 @@ initilaize par array(){
 par[i] = i;
 
 };
+
+
+
+What “rank” actually tracks
+
+The rank is an estimate of the height of the tree — not an exact size, not number of nodes.
+We use it only to decide which tree should go under which.
+
+🪵 Case 1: Ranks are different
+
+If one tree is taller (say rank[px] > rank[py]),
+we make the shorter one a child of the taller one.
+👉 The height of the taller tree does not increase, so its rank stays the same.
+
+No height increase = no rank increase ✅
+
+🌳 Case 2: Ranks are equal
+
+Let’s say:
+
+Tree A → rank = 2
+Tree B → rank = 2
+
+
+Both trees have equal height.
+Now, if you attach one root under the other —
+the new tree’s height increases by 1.
+
+So new height = old height + 1 →
+👉 rank of the new root must increase by 1.
+
+
+
+
+1-2
+
+3-4
+
+-> attach these 
+
+1-2 
+ -3-4
+
+size is 3 if u put verticallt
