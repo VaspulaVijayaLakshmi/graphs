@@ -17,14 +17,14 @@ Notes:
 Was thinking this to be DP.  
 But how can we solve this with PQ?
 
----
+
 
 ### Concern
 What if the cell paths are min min min.. but boom at last we hit max height?  
 We would've skipped the other path if they are greater in the beginning but lesser moving forward.  
 We are not considering all possibilities with PQ, right?
 
----
+
 
 ### Why PQ / Dijkstra Still Works
 
@@ -39,3 +39,28 @@ So even if Path A gets to the cell first, and Path B comes later:
 - PQ ensures that paths with smaller max effort are explored first.  
 
 This way, no “better future path” is skipped.
+
+
+______________
+
+Spanning Tree:
+
+-> Prim’s Algorithm uses a Priority Queue (Min-Heap).
+
+//put the 
+
+
+-> Kruskal’s Algorithm does not — it uses sorting + Disjoint Set Union (DSU).
+
+//sort the edges
+//add it to DSU, if they belong, then skip, else add it to dsu.
+
+________
+
+
+// Comparator for sorting edges by weight
+    static bool cmp(const vector<int>& a, const vector<int>& b) {
+        return a[2] < b[2]; // sort by weight (ascending)
+    }
+
+________
