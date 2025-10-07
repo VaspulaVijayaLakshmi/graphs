@@ -1,0 +1,55 @@
+// User function Template for C++
+class Solution {
+  public:
+     vector<int> par;
+  
+    // Comparator for sorting edges by weight
+    static bool cmp(const vector<int>& a, const vector<int>& b) {
+        return a[2] < b[2]; // sort by weight (ascending)
+    }
+    
+    
+    int find(int node ){
+        
+        if(par[node]==node)
+          return node;
+          
+        return par[node]=find(par[node]);  
+        
+    }
+    
+    
+     bool unions(int nodeA,int nodeB){
+        
+        int u=find(nodeA);
+        int v=find(nodeB);
+            
+        if(u==v) return false;
+        
+        par[v] = u;
+        return true;
+        
+    }
+    
+    int kruskalsMST(int V, vector<vector<int>> &edges) {
+        // code here
+        
+        sort(edges.begin(),edges.end(),cmp);
+        
+        par.resize(V);
+        for(int i=0;i<V;i++){
+            par[i]=i;
+        }
+        
+        int tree=0;
+    
+        for(int i=0;i<edges.size();i++){
+            
+            if(unions(edges[i][0],edges[i][1]))
+             tree+=edges[i][2];
+        }
+        
+       return tree; 
+        
+    }
+};
