@@ -1,0 +1,29 @@
+Uolevi wants to choose a trip that has as many cities as possible.
+no directed cycles in the flight network.
+
+First print the maximum number of cities on the route. After this, print the cities in the order they will be visited. You can print any valid solution.
+
+no cyckes so we can egate the edges.
+also we need to tell the path 
+so we will maintain a par array.
+
+
+//normal dijstra 
+
+class SOlution{
+
+public:
+
+int longestFlightRoute(int n,int m,vector<vector<int> edges){
+
+ const int INF=1e8;
+ vector<int> dis(n,-INF);
+
+pq.push
+
+
+}
+
+
+
+}
