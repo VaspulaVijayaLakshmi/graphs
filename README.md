@@ -132,14 +132,62 @@ dist[node][1] = ∞
 
 ---
 
+# Shortest Path Using At Most One Curved Edge
+
+**Problem Links:**  
+- https://www.geeksforgeeks.org/problems/shortest-path-using-atmost-one-curved-edge--170647/1  
+- https://cses.fi/problemset/task/1195
+
+
+
 This way, you extend normal Dijkstra to work on two layers —  
 one layer when the special edge is unused, and one when it’s already used.  
-It guarantees that all valid paths (with or without the special edge) are explored efficiently, and the final answer is the minimum of both `dist[target][0]` and `dist[target][1]`.
+
+It guarantees that all valid paths (with or without the special edge) are explored efficiently,  
+and the final answer is the minimum of both `dist[target][0]` and `dist[target][1]`.
+
+**IMPORTANT PROBLEM:** Shortest Path Using Atmost One Curved Edge
 
 
 
-IMPORTANT PROBLEM:
-Shortest Path Using Atmost One Curved Edge
--> https://www.geeksforgeeks.org/problems/shortest-path-using-atmost-one-curved-edge--170647/1
--> https://cses.fi/problemset/task/1195
+_________
+
+
+
+IN Dijstras- once the way is optimized its final.
+Even if u find a new node which reaches to you in the same amount of diustance or time
+
+we need not push it again to queue
+Thats just increase the number of ways to reach.
+https://www.geeksforgeeks.org/problems/number-of-ways-to-arrive-at-destination/1
+
+
+Also when you are taking the cummulative sum
+DOnt assign like 
+if a new way is found then directly dont assign ways[nnode]=1 -> something
+
+Cummulate the parent's sum
+
+ways[child_ node]  += ways[parent_node] 
+
+
+_______
+
+
+Digjstra works on monotonous graphs.
+That is  -ve or +ve edges
+or graph with No negative edges.
+
+If we are sure there wont be negative graph cycle then dont use Digstra at all
+
+
+
+__________
+
+
+If we are asked about max time needed or somethings, and graph doesnt contains cycles
+then we can negate(-) the edges.
+
+
+
 
