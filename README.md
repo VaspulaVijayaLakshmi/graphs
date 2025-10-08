@@ -217,4 +217,10 @@ Infinite increase (positive cycle)
 → becomes infinite decrease (negative cycle)
 → Bellman-Ford can detect it
 
+______
+
+Eg: https://cses.fi/problemset/task/1673
+HIGH SCORE 
+
+
 
