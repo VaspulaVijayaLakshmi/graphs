@@ -1,0 +1,86 @@
+You play a game consisting of n rooms and m tunnels. 
+
+Your initial score is 0, and each tunnel increases your score by x where x may be both positive or negative.
+You may go through a tunnel several times.
+Your task is to walk from room 1 to room n. What is the maximum score you can get?
+
+
+-> Each tunnel increases your score.
+
+
+but x can be posiitve or negative 
+->neg edges/positive edges
+
+
+also go through the tunnel multiple times.
+-> so there is a cycle
+
+
+
+Print one integer: the maximum score you can get. However, if you can get an arbitrarily large score, print -1.
+If arbitarily large score liek infinite then print -1.
+
+
+Also we would get infortely large score unless theyre is a cycle.(positive cycle).
+
+
+Tunnels are 1 way tunnels-> means directional graph
+
+
+Now hw to find max score
+
+We can reverse the edge weoght.
+
+Negate all the edge weight.
+
+Now positive edges becomes negative and positive cycle becomes negative cycle.
+
+Negative cyclke is there eans it indictes there was a posibt ecycle originally.
+
+this can be detected using Bellman ford.
+
+
+
+class Solution{
+
+public: 
+
+ int highScore(int n,int m, vector<vector<int>> &edges){
+
+We need to negate edges.
+const long long INF = 1e18;
+
+//this is enough for negating edge weights.
+vector<vector<int>> dis(n,-INF)
+
+dis[0] =0 ;
+
+
+for(int i=0;i<n-1;i++){
+ for(auto [u,v,w]: edges){
+
+      if(dis[u]!=-INF && dis[v]<dis[u]+w){
+         dis[v]=dis[u]+w;
+      }
+ }
+}
+
+for(auto [u,v,w]:edges){
+
+    if(dis[v]<dis[u]+w){
+
+//negative cycle is there, tht means this was a positive cycle, originally.
+         return -1;
+      }
+}
+
+
+// If no positive cycles, max score is dist[n-1]
+        return dist[n-1];;
+}
+
+
+ }
+
+}
+
