@@ -10,16 +10,78 @@ so we will maintain a par array.
 
 //normal dijstra 
 
-class SOlution{
+class Solution{
 
 public:
 
-int longestFlightRoute(int n,int m,vector<vector<int> edges){
+vector<int> topo;
+vector<vetor<int>> adj;
+vector<bool> visited;
 
- const int INF=1e8;
- vector<int> dis(n,-INF);
+void dfs(vector<vector<int>> &adj, int node){
 
-pq.push
+if(!visited[node]){
+for(auto child:adj[node])
+   dfs(adj,child);
+}
+
+topo.push_back(node);
+
+}
+
+
+int longestFlightRoute(int n,int m,vector<vector<int>> edges){
+
+adj.resize(n);
+
+for(auto edge:edges){
+adj[u].push_back(v);
+}
+
+       visited.resize(n+1, false);
+        for(int i=1; i<=n; i++) {
+            if(!visited[i]) dfs(i, adj, visited, topo);
+        }
+
+
+
+ reverse(topo.begin(),topo.end());
+
+//after topo sort we have the edges in ordered manner.
+//refer notes
+//now do prcoess nodes in topo order with dp
+
+const int INF=1e8;
+
+vector<int> dp(n,0);
+vector<int> par(n,-1);
+dp[0]=1;
+
+
+      for(int u : topo) {
+            if(dp[u] == INT_MIN) continue; // unreachable
+            for(int v : adj[u]) {
+                if(dp[v] < dp[u] + 1) {
+                    dp[v] = dp[u] + 1;
+                    parent[v] = u;
+                }
+            }
+        }
+
+
+ if(dp[n] == INT_MIN) {
+            cout << "IMPOSSIBLE\n";
+            return;
+}
+
+ // Reconstruct path
+        vector<int> path;
+        for(int cur = n; cur != -1; cur = parent[cur]) path.push_back(cur);
+        reverse(path.begin(), path.end());
+
+
+
+
 
 
 }
