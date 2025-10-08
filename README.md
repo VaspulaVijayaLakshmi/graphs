@@ -223,4 +223,9 @@ Eg: https://cses.fi/problemset/task/1673
 HIGH SCORE 
 
 
+https://cses.fi/problemset/task/1680
+Longest Flight Route
+
+
+
 
