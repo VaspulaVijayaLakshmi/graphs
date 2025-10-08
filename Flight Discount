@@ -1,0 +1,77 @@
+https://cses.fi/problemset/task/1195
+
+// User function Template for C++
+
+class Solution {
+  public:
+    int shortestPath(int n, int m, int a, int b, vector<vector<int>> &edges) {
+        
+        //u,{v,ticketcost}
+       vector<vector<pair<int,int>> adj(n + 1); 
+        
+        //build adj graph
+        for(auto edge:edges){
+            
+            int u=edge[0];
+            int v=edge[1];
+            int cost=edge[2];
+            
+            adj[u].push_back({v,cost});
+            adj[v].push_back({u,cost});
+            
+        }
+        
+        //cost,node,used/nt used - used
+        priority_queue< vector<int> , vector<vector<int>>,
+                        greater<vector<int>>> pq;
+                        
+        
+        // dist[used][node]
+        // used = 0 → no coupon used yet
+        // used = 1 → coupon used already used            
+        vector<vector<int>> dis(2,vector<int>(n+1,INT_MAX));
+        
+        
+        //0th row not used
+        dis[0][1] = 0;
+        pq.push({0,1, 0});
+        
+        
+        while(!pq.empty()){
+            
+            auto top = pq.top();
+            pq.pop();
+            
+            int currCost = top[0];
+            int node = top[1];
+            int usedCoupon = top[2];
+            
+            
+            for(auto child:adj[node]){
+                
+                int cnode = child.first;
+                int ccost = child.second;
+                
+                //we need to go ahead without coupon anyway
+                if(currCost+ccost < dis[usedCoupon][cnode]){
+                    
+                    dis[usedCoupon][cnode]=currCost+ccost;
+                    pq.push({dis,cnode,usedCoupon});
+                }
+                
+                if(used==0 && currCost+(ccost/2) < dis[1][cnode]){
+                    
+                    dis[1][cnode]=currCost+(ccost/2);
+                    pq.push({dis[1][cnode],cnode,1});
+                }
+                
+                
+                }
+
+            }
+        
+        
+       return min(dis[0][b], dis[1][b]);
+        
+    }
+};
