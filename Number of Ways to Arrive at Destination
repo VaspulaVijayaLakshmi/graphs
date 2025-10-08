@@ -1,79 +1,109 @@
 https://www.geeksforgeeks.org/problems/number-of-ways-to-arrive-at-destination/1?page=2&category=Graph&sortBy=submissions
 
 
+// // User function Template for C++
+
 class Solution {
   public:
     int countPaths(int n, vector<vector<int>>& roads) {
-
-        // create adj list
-    vector<pair<int,int>> adj[n];
-        
-    
-    for(auto val : roads)
-    {
-        // u -> {v,wt}
-        adj[val[0]].push_back({val[1],val[2]});
-        adj[val[1]].push_back({val[0],val[2]});
-    }
         
         
-        // we just need to store wt and u
+        //adj
+        //node,time
+        vector<vector<pair<int,int>>> adj(n);
         
-        // v i.e, all the children we cn get from adj lits
-        // in grid prblms, we need to store , u,v here we dont need
-    priority_queue<pair<long long,int>,
-    vector<pair<long long,int>>, 
-    greater<pair<long long,int>>> pq;
-                   
+        for(auto road:roads){
+            
+            int u=road[0];
+            int v=road[1];
+            int time=road[2];
+            
+            adj[u].push_back({v,time});
+            adj[v].push_back({u,time});
+        }
         
-        vector<long long> dis(n,1e18);
-        int mod = (int)(1e9 + 7) ;
+        vector<long long> ways(n,0);
+        vector<long long> time(n,LLONG_MAX);
         
-        // maintain an array to track the number of ways to reach a particular
-        // node
         
-        vector<int> ways(n,0);
+        //<time,node>
+        priority_queue< pair<long long,long long>,
+                        vector<pair<long long,long long>>,
+                        greater<pair<long long,long long>>> pq;
+                        
+        pq.push({0,0}) ;
+        time[0]=0;
         
-        pq.push({0,0});
+        const int MOD = 1e9 + 7;
+        
+        //IMP
         ways[0]=1;
-        dis[0]=0;
-        
         
         while(!pq.empty()){
             
             auto front=pq.top();
             pq.pop();
             
-            long long wt=front.first;
+            long long t=front.first;
             int node=front.second;
             
-            for(auto child : adj[node]){
+            for(auto child:adj[node]){
                 
-                long long cwt=child.second;
                 int cnode=child.first;
+                long long ctime=child.second;
                 
+                long long timeTaken = t + ctime;
                 
-                if(dis[cnode] > wt+cwt){
+                if(timeTaken < time[cnode]){
+                
+                        time[cnode]=ctime+t;
+                        pq.push({time[cnode],cnode});
+                        
+                      // this is wrong because we dont reach this from one path only right..
+                      //  ways[cnode]=1;
+                      ways[cnode]=ways[node];
+                    }
                     
-                    dis[cnode] = wt+cwt;
-                    pq.push({dis[cnode],cnode});
-                    ways[cnode] = ways[node] ;
-                }
-                
-                
-                else if(dis[cnode] == wt+cwt){
-                    ways[cnode] =  ( ways[cnode]+ways[node] ) %mod;
-                }
+                    
+                    else if(timeTaken==time[cnode]){
+                        
+                        
+                        
+                         ways[cnode] = (ways[cnode] + ways[node]) % MOD;
+                    }
                 
                 
             }
-        
-            
         }
-        
-   
-        return ways[n-1]%mod;
+            
+
+            return ways[n-1] % MOD;
         
         
     }
 };
+
+
+
+// Why we dont push again ?
+
+// Pushing it again when the time is the same doesn’t change the order or help — Dijkstra guarantees the first time we process a node at its shortest distance, it’s already optimal.
+// What we do need is to update the number of ways — because there’s another distinct shortest path reaching the same distance.
+
+// So, the correct approach:
+
+// Push into the queue only when you found a strictly shorter path.
+// Just update ways if it’s equal distance.
+
+
+// When you pop a node from the priority queue, that node’s shortest distance is finalized — because you always pop the smallest distance first.
+
+// So when you find another path that gives the same shortest distance,
+// it doesn’t change the distance value, it just increases the count of ways to reach it.
+
+// We don’t need to push it again, because:
+
+// That node will already be processed (or has been processed) with that shortest distance.
+
+// Pushing it again with the same distance adds no new information — just redundant processing (and potential TLE).
+
