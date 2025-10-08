@@ -248,7 +248,35 @@ We want longest path in terms of number of cities.
 Use DP along topological order.
 
 
-
 Topological order ensures: when we process a node, all its predecessors have been processed.
 So dp[u] is already maximum possible cities up to node u.
 No cycles → no need for relaxation multiple times.
+
+_______
+
+TOPO + DP works with the Weighted edges as well as long as their are no engative edges
+
+```
+1.
+
+vector<long long> dp(n+1, LLONG_MIN); // for max path
+dp[start] = 0;  // distance to start node
+vector<int> parent(n+1, -1); // to reconstruct path
+
+
+2.
+Traverse nodes in topo order:
+
+3.
+for(int u : topo_order){
+    if(dp[u] == LLONG_MIN) continue; // unreachable
+
+    for(auto [v, w] : adj[u]){
+        if(dp[v] < dp[u] + w){
+            dp[v] = dp[u] + w;
+            parent[v] = u;
+        }
+    }
+}
+
+
