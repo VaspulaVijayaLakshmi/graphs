@@ -178,7 +178,7 @@ Digjstra works on monotonous graphs.
 That is  -ve or +ve edges
 or graph with No negative edges.
 
-If we are sure there wont be negative graph cycle then dont use Digstra at all
+If we are sure there wont be negative graph cycle then dont use Dikjsstra at all
 
 
 
@@ -188,6 +188,33 @@ __________
 If we are asked about max time needed or somethings, and graph doesnt contains cycles
 then we can negate(-) the edges.
 
+___
 
+Approach	           Handles Negatives	Detects Positive       Cycles	Works Here?
+Dijkstra	                ❌	                    ❌	               ❌
+Bellman-Ford	            ✅	                    ✅	               ✅
+Topo DP (if DAG)	        ✅	                     N/A	        Only if DAG
+
+____
+
+When we negate all edge weights (w' = -w):
+
+Original            Edge Weight	  After Negation	Effect on Cycle
+Positive edge	Negative edge	Positive cycle → becomes negative cycle
+Negative edge	Positive edge	Negative cycle → becomes positive cycle
+
+_______
+
+
+Bellman-Ford detects negative cycles (meaning: total weight keeps decreasing forever).
+But we are finding maximum score — that’s like saying:
+
+“Can we increase our score infinitely?”
+
+So when we negate the weights:
+
+Infinite increase (positive cycle)
+→ becomes infinite decrease (negative cycle)
+→ Bellman-Ford can detect it
 
 
