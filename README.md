@@ -176,7 +176,12 @@ _______
 
 Digjstra works on monotonous graphs.
 That is  -ve or +ve edges
-or graph with No negative edges.
+or graph with No negative cycles.
+
+
+I.e, 
+DIJSTRA works on negative edges only if its DAG.
+
 
 If we are sure there wont be negative graph cycle then dont use Dikjsstra at all
 
