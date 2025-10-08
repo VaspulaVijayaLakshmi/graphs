@@ -140,5 +140,6 @@ It guarantees that all valid paths (with or without the special edge) are explor
 
 IMPORTANT PROBLEM:
 Shortest Path Using Atmost One Curved Edge
-https://www.geeksforgeeks.org/problems/shortest-path-using-atmost-one-curved-edge--170647/1
+-> https://www.geeksforgeeks.org/problems/shortest-path-using-atmost-one-curved-edge--170647/1
+-> https://cses.fi/problemset/task/1195
 
