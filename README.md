@@ -227,5 +227,28 @@ https://cses.fi/problemset/task/1680
 Longest Flight Route
 
 
+_______________
+_______________
 
 
+
+Topological Sort + DP Approach
+
+Longest Flight Route
+
+We will find the order of elements, then we will traverse the graph order wise.
+
+
+
+Topological Sort + DP Approach
+Idea:
+
+Graph is a DAG → there exists at least one topological ordering of nodes.
+We want longest path in terms of number of cities.
+Use DP along topological order.
+
+
+
+Topological order ensures: when we process a node, all its predecessors have been processed.
+So dp[u] is already maximum possible cities up to node u.
+No cycles → no need for relaxation multiple times.
