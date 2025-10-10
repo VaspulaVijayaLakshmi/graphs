@@ -1,0 +1,66 @@
+//https://www.youtube.com/watch?v=7zmgQSJghpo&list=PLgUwDviBIf0oE3gA41TKO2H5bHpPd7fzn&index=16
+
+
+class Solution {
+  public:
+    set<vector<vector<int>>> st;
+    vector<vector<int>> dir = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+    
+    void dfs(vector<vector<int>>& grid,int x,int y, pair<int,int>& base,vector<vector<int>>& res){
+        
+        grid[x][y]=0;
+        
+        for(int i=0;i<4;i++){
+            
+            int nx=x+dir[i][0];
+            int ny=y+dir[i][1];
+            
+            if(nx>=0 && ny>=0 && nx<grid.size() && ny<grid[0].size() && grid[nx][ny]==1){
+                
+                  res.push_back({nx-base.first,ny-base.second});
+                  dfs(grid,nx,ny,base,res);
+            }            
+            
+        }
+        
+        
+    }
+    
+    
+    
+    int countDistinctIslands(vector<vector<int>>& grid) {
+        
+        int n=grid.size();
+        int m=grid[0].size();
+        
+         pair<int,int> base;
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                
+                if(grid[i][j]==1){
+                    
+                    vector<vector<int>> vec;
+                    base = {i,j};
+
+                    vec.push_back({0,0});
+                    
+                    dfs(grid,i,j,base,vec);
+                    
+                    
+                    st.insert(vec);
+                }
+            }
+        }
+        
+        // for(auto s:st){
+        //     for(auto t:s)
+        //       cout<<t[0]<<" "<<t[1]<<" , ";
+               
+        //       cout<<"\n";
+        // }
+        
+        return st.size();
+        
+    }
+};
