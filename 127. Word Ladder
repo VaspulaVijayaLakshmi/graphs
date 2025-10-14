@@ -1,53 +1,74 @@
 class Solution {
-public:
-    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+  public:
+    int wordLadderLength(string startWord, string endWord,
+                         vector<string>& wordList) {
+         
+         
+        if(startWord==endWord) return 0;
         
-        queue<string> q;
-        q.push(beginWord);
-
-        unordered_map<string,bool> vis;
-        vis[beginWord] = true;
-
-        if(beginWord.length() != endWord.length())
-          return 0;
-
-        unordered_set<string> words(wordList.begin(),wordList.end());
-        int k=1;
-
-        while(!q.empty()){
-
-            int sz=q.size();
-            while(sz--){
-
-            auto front = q.front();
-            q.pop();
-
-            if(front == endWord)
-              return k;
-
-            // for each alphabet
-            for(int i=0;i<26;i++){
-
-            // go through each letter
-            for(int j=0;j<front.size();j++){
-
-                string next= front;
-                next[j] = 'a' + i;
-
-                if(vis.find(next) == vis.end() && words.find(next) != words.end()){
-                 q.push(next);
-                 vis[next] = true;
-                }
-
-              }
-
-            }
-            }
-
-            k++;
+      
+        unordered_set<string> words;
+        
+        for(int i=0;i<wordList.size();i++){
+            words.insert(wordList[i]);
+            
         }
-
-     return 0;
-
+        
+        if(words.find(endWord)==words.end())
+          return 0;
+          
+                
+        unordered_map<string,bool> vis; 
+                             
+        queue<string> q;
+        q.push(startWord);
+        vis[startWord] = true;
+        int steps=1;
+        
+        
+        while(!q.empty()){
+            
+            int size=q.size();
+            
+            while(size--){
+            
+            auto front=q.front();
+            q.pop();
+            
+            
+            for(int i=0;i<front.length();i++){
+                
+                 string prefix=front.substr(0,i);
+                 string suffix=front.substr(i+1);
+                   
+              for(int j=97;j<123;j++){
+ 
+                  string newWord = (prefix + char(j) + suffix);
+                   
+                //   cout<<newWord<<" , ";
+                   
+                  if(newWord==endWord){
+                      return steps+1;
+                  }
+                   
+                   
+                   
+                  if(words.find(newWord)!=words.end() && !vis[newWord]){
+                     q.push(newWord);
+                     vis[newWord]=true;
+                  }
+                   
+                }
+            }
+            
+            }
+            
+            steps++;
+            
+        }
+        
+        return 0;
+        
     }
 };
+
