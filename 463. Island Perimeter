@@ -1,0 +1,31 @@
+class Solution {
+public:
+       int islandPerimeter(vector<vector<int>>& grid) {
+        if (grid.empty() || grid[0].empty()) return 0;
+        int rows = grid.size(), cols = grid[0].size();
+        int perimeter = 0;
+        // Directions: up, down, left, right
+        int dr[4] = {-1, 1, 0, 0};
+        int dc[4] = {0, 0, -1, 1};
+        
+        for (int r = 0; r < rows; ++r) {
+            for (int c = 0; c < cols; ++c) {
+                if (grid[r][c] == 1) {
+                    int edges = 4;
+                    for (int k = 0; k < 4; ++k) {
+                        int nr = r + dr[k];
+                        int nc = c + dc[k];
+                        // if neighbor is inside grid and is land, subtract share
+                        if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1) {
+                            edges -= 1;
+                        }
+                    }
+                    perimeter += edges;
+                }
+            }
+        }
+        return perimeter; 
+    }
+};
+
+// The easiest and most robust approach is: for each land cell add 4, then subtract 1 for every neighboring land cell (because that shared edge doesn't contribute to perimeter)
