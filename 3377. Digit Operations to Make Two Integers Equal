@@ -1,0 +1,107 @@
+class Solution {
+public:
+
+    // Step 1: Sieve of Eratosthenes to find all primes up to a given number
+    void find_prime(vector<bool>& isprime, int n) {
+        isprime[0] = isprime[1] = false; // 0 and 1 are not prime numbers
+        
+        for (int i = 2; i * i < n; i++) {
+            if (isprime[i]) {
+                for (int j = i * i; j < n; j += i) {
+                    isprime[j] = false; // Mark all multiples of i as non-prime
+                }
+            }
+        }
+    }
+
+    // Step 2: Generate possible "neighboring nodes" by increasing or decreasing digits
+    vector<int> find_node(int n) {
+        vector<int> neighbors;
+        
+
+        //n is in the range from 1 to 10^4
+        // so we are doinf 1, 10,100,10^4
+
+        for (int i = 1; i <= n; i *= 10) {
+
+            int d = (n / i) % 10; // Extract the current digit
+
+
+            //each digit will be decreased and increased
+            
+            // Decrease the current digit if possible
+            if (d > 0) {
+                neighbors.push_back(n - i);
+            }
+
+            // Increase the current digit if possible
+            if (d < 9) {
+                neighbors.push_back(n + i);
+            }
+        }
+
+        return neighbors;
+    }
+
+    // Step 3: Main function to find the minimum operations
+    int minOperations(int n, int m) {
+        const int MAX = 1e4; // Limit for prime computation
+        const int INF = 1e9; // Represent unreachable distances
+        
+        // Step 3.1: Precompute all primes up to MAX
+        vector<bool> isprime(MAX, true);
+        find_prime(isprime, MAX);
+        
+        // Edge case: If starting or ending node is prime, return -1
+        if (isprime[n] || isprime[m]) {
+            return -1;
+        }
+
+        // Step 3.2: Initialize distance array and priority queue
+        vector<int> dist(MAX, INF); // Distance array initialized to infinity
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+
+        // Start from node `n`
+        dist[n] = 0;
+        pq.push({dist[n], n});
+
+        // Step 3.3: Dijkstra's algorithm to find shortest path
+        while (!pq.empty()) {
+            int dis = pq.top().first; // Current distance
+            int num = pq.top().second; // Current node
+            pq.pop();
+
+            // Skip processing if the node is prime
+            if (isprime[num]) {
+                continue;
+            }
+
+            // Explore all neighboring nodes
+            for (auto neighbor : find_node(num)) {
+                // Skip processing if the neighbor is prime
+                if (isprime[neighbor]) {
+                    continue;
+                }
+
+                // Relax the distance for the neighbor
+                if (dist[neighbor] > dis + num) {
+                    dist[neighbor] = dis + num;
+                    pq.push({dist[neighbor], neighbor});
+                }
+            }
+        }
+
+        // Step 3.4: Return the result
+        return dist[m] == INF ? -1 : m + dist[m];
+    }
+};
+
+
+// The cost of a transformation is the sum of all values that n takes throughout the operations performed.
+
+
+// BFS doesn’t guarantee that you explore the lowest-cost paths first,
+// because it expands level by level (by number of operations),
+// not by total cost accumulated.
+
+//here we want to find the min val each step.
