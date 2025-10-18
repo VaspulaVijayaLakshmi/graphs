@@ -1,0 +1,73 @@
+
+//multisource bfs
+//we have all 1's
+//we need to find the dis of 
+
+//same like rotten oranges
+
+class Solution {
+public:
+    int maxDistance(vector<vector<int>>& grid) {
+       
+        int r=grid.size();
+        int c=grid[0].size();
+        
+        
+        vector<vector<int>> vis(r,vector<int>(c, 0));
+        queue<pair<int,int>> q;
+        
+        
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                
+                if(grid[i][j]==1){
+                    q.push({i,j});
+                    vis[i][j]=1;
+                }
+            }
+        }
+        
+        
+      //  If no land or water exists in the grid, return -1.
+       if(q.size() == 0 || q.size() == r*c) {     //Found no 1's in the grid  //Empty queue
+            return -1;                                       //Found no 0's in the grid  //Full queue
+        }
+        
+        int level=-1;
+        
+        
+        vector<int> dx({0, 1, 0, -1});
+        vector<int> dy({1, 0, -1, 0});
+        
+        
+        while(!q.empty()){
+        
+            
+            int size=q.size();
+            
+            while(size-- >0){
+             auto pos = q.front();
+             q.pop();
+            
+            for (int i = 0; i < 4; ++i)
+            {
+                int x = pos.first + dx[i];
+                int y = pos.second + dy[i];
+                
+                if (x >= 0 && x < grid.size() &&  y >= 0 && y < grid[0].size() && vis[x][y] == 0 ){
+                    
+                        q.push({x,y});
+                        vis[x][y]=1;
+                 }
+            
+            }
+            }
+        
+            level++;
+        }
+        
+        return level;
+        
+     
+    }
+};
