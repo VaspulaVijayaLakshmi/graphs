@@ -291,3 +291,39 @@ IMP
 Shotrtest Bridge
 
 
+
+
+__________________
+
+
+Digjistra Optimisation
+
+```
+
+// You’re using a min-heap (priority queue) to always expand the node with the smallest known time/distance so far.
+
+// But—because you can push the same node multiple times into the queue (each time you find a shorter path),
+// some of those pushed entries will eventually become stale/outdated once you’ve already found a better route to that node.
+
+// Example
+
+// Say you’re at node 0 → node 1 can be reached in two ways:
+
+// Path	Time
+// 0 → 1	10
+// 0 → 2 → 1	6
+
+// What happens:
+
+// You first push {10, 1} into the PQ.
+
+// Later, you discover {6, 1} and push that too.
+
+// When you pop {10, 1}, you should skip it,
+// because dis[1] is already 6, which is smaller (better).
+
+// That’s what this line does 
+
+// if (time > dis[node]) continue;
+
+```
