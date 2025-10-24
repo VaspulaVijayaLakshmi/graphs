@@ -1,0 +1,96 @@
+class Solution {
+public:
+    vector<int> minimumTime(int n, vector<vector<int>>& edges, vector<int>& disappear) {
+
+        vector<vector<pair<int,int>>> adj(n);
+        for(auto &e:edges)
+        {
+            int u=e[0],v=e[1],w=e[2];
+            adj[u].push_back({v,w});
+            adj[v].push_back({u,w});
+        }
+
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+        //length =0, node=0
+        pq.push({0,0});
+        
+        vector<int> dis(n,INT_MAX);
+        dis[0]=0;
+
+
+        while(!pq.empty()){
+            
+            auto [time,node] = pq.top();
+            pq.pop();
+
+            if(time>=disappear[node]) continue;
+
+            if (time > dis[node]) continue;
+
+            for(auto [cnode,ctime] : adj[node]){
+
+                int tt=time+ctime;
+
+                //check if the new path takes less time
+                //and we are reach before it dissapered
+                if(dis[cnode]> tt && tt<disappear[cnode]){
+                   dis[cnode]=tt;
+                   pq.push({tt,cnode});
+                }
+
+            }
+        }
+
+         for(int i=0;i<n;i++)
+            if(dis[i]==INT_MAX) 
+                 dis[i]=-1;
+
+        
+        return dis;  
+    }
+};
+
+
+
+// to avoid tle
+
+
+// modified Dijkstra's algorithm where we not only check if we found a shorter path, but also verify that we arrive in time.
+// Key Optimization Insight: If we arrive at a node at time t and t >= disappear[node], we don't push it to the priority queue at all. 
+
+
+// This is because:
+
+// Any path extending from this invalid arrival will also be invalid (since time only increases)
+// By not adding it to PQ, we automatically prune all future invalid paths that would stem from this node
+// This prevents unnecessary exploration of paths that are guaranteed to be invalid.
+// This pruning mechanism ensures we only explore valid time-constrained paths, making the algorithm much more efficient than checking validity at every step.
+
+
+// What happens during Dijkstra
+
+// You’re using a min-heap (priority queue) to always expand the node with the smallest known time/distance so far.
+
+// But—because you can push the same node multiple times into the queue (each time you find a shorter path),
+// some of those pushed entries will eventually become stale/outdated once you’ve already found a better route to that node.
+
+// Example
+
+// Say you’re at node 0 → node 1 can be reached in two ways:
+
+// Path	Time
+// 0 → 1	10
+// 0 → 2 → 1	6
+
+// What happens:
+
+// You first push {10, 1} into the PQ.
+
+// Later, you discover {6, 1} and push that too.
+
+// When you pop {10, 1}, you should skip it,
+// because dis[1] is already 6, which is smaller (better).
+
+// That’s what this line does 
+
+// if (time > dis[node]) continue;
