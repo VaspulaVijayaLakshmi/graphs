@@ -1,0 +1,66 @@
+class Solution {
+public:
+
+    int nodesAtDisK(vector<vector<int>>& adj,int u,int p,int k){
+
+        if(k<0) return 0;
+
+        int c=1;
+        for(int child:adj[u]){
+            if(child!=p){
+             c += nodesAtDisK(adj,child,u,k-1);
+            }
+        }
+
+        return c;
+
+    } 
+
+
+    vector<int> maxTargetNodes(vector<vector<int>>& e1, vector<vector<int>>& e2, int k) {
+
+       //build adjacency graph
+        vector<vector<int>> adj1(e1.size()+1),adj2(e2.size()+1);
+
+         for (auto &e : e1) {
+            adj1[e[0]].push_back(e[1]);
+            adj1[e[1]].push_back(e[0]);
+        }
+
+         for (auto &e : e2) {
+            adj2[e[0]].push_back(e[1]);
+            adj2[e[1]].push_back(e[0]);
+        }
+
+        //find the max node with the maxi no of nodes at a distance K-1 in 2nd tree
+        int maxi=0;
+        for(int i=0;i<adj2.size();i++){
+             maxi= max(maxi, nodesAtDisK(adj2,i,-1,k-1));
+        }
+
+
+        // Find the nodes at DIS K of each node
+        // and try to attach with the node that has max nodes from tree2
+        vector<int> res(adj1.size());
+        for(int i=0;i<adj1.size();i++){
+             int kk = nodesAtDisK(adj1,i,-1,k);
+             res[i] = (maxi + kk );
+        }
+
+        return res;
+        
+    }
+};
+
+
+//also for tree 1 we need to find the nodes at a distance K for each node
+
+//for node 2 we need nodes at diatnce K-1 for each node, because when we join them we incur one edge.
+
+//one limitiation in my code is that, here I did dfs from each node to count the number of nodes at distance K
+
+//but for large no.of nodes it wont work.
+//we cant do  dfs from each node.
+
+
+
