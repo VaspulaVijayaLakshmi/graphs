@@ -1,0 +1,39 @@
+class Solution {
+public:
+    vector<vector<int>> findFarmland(vector<vector<int>>& land) {
+        int n = land.size(), m = land[0].size();
+        vector<vector<int>> res;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (land[i][j] == 1) {
+                    // top-left corner found
+                    int r2 = i, c2 = j;
+
+                    // move down to find bottom boundary
+                    while (r2 + 1 < n && land[r2 + 1][j] == 1)
+                        r2++;
+
+                    // move right to find right boundary
+                    while (c2 + 1 < m && land[i][c2 + 1] == 1)
+                        c2++;
+
+                    // mark all farmland cells in this rectangle as visited
+                    for (int r = i; r <= r2; r++) {
+                        for (int c = j; c <= c2; c++) {
+                            land[r][c] = 0;
+                        }
+                    }
+
+                    // record farmland
+                    res.push_back({i, j, r2, c2});
+                }
+            }
+        }
+
+        return res;
+    }
+};
+
+
+//this we can do greedily by traversing the grid 
