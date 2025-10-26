@@ -284,19 +284,11 @@ for(int u : topo_order){
     }
 }
 
+```
 _______________________________
 
-IMP
 
-Shotrtest Bridge
-
-
-
-
-__________________
-
-
-Digjistra Optimisation
+### Digjistra Optimisation
 
 ```
 
@@ -325,5 +317,15 @@ Digjistra Optimisation
 // That’s what this line does 
 
 // if (time > dis[node]) continue;
+
+```
+
+_________________
+
+
+1. Course Schedule IV - Bit set Appraoch Interesting
+2. All Ancestors of a Node in a Directed Acyclic Graph -  can be solved by bitset
+3. Shortest Bridge
+
 
 
