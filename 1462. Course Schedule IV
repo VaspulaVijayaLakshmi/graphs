@@ -1,0 +1,110 @@
+class Solution {
+public:
+    vector<bool> checkIfPrerequisite(int n, vector<vector<int>>& edges, vector<vector<int>>& queries) {
+
+      //  topo sort with approach 2
+
+      vector<bitset<100>> preReq(n);
+      vector<vector<int>> adj(n);
+      vector<int> indegree(n,0);
+
+      for(auto edge:edges){
+        int a=edge[0];
+        int b=edge[1];
+
+        adj[a].push_back(b);
+        preReq[b].set(a);      //set tht a is a prereq of b
+        indegree[b]++;
+
+      }
+
+      queue<int> q;
+      for(int i=0;i<n;i++){
+        if(indegree[i]==0)
+         q.push(i);
+      }
+
+      while(!q.empty()){
+
+        auto front=q.front();
+        q.pop();
+
+        for(auto child:adj[front]){ // For all courses that require front
+
+            preReq[child] |= preReq[front]; //merge al preReq of parent to child
+            //OR operation b/w both
+
+            indegree[child]--;
+
+            if(indegree[child]==0)
+             q.push(child);
+        }
+
+      }
+
+
+      vector<bool> res(queries.size());
+      int idx=0;
+
+      for(auto qry:queries){
+
+        int u=qry[0];
+        int v=qry[1];
+
+        res[idx++] =preReq[v][u]; // Check if 'u' is in 'v's prerequisites
+      }
+
+      return res;
+
+        
+    }
+};
+
+
+
+// appraoch 1:
+//so here we need to multiple topo sorts.
+
+
+// appraoch 2:
+// or one topo sort and then i will find the order.
+// then i need to do something likes BS and check if u comes before b for each query
+
+
+// prerequisites = [[0,1],[1,2],[2,3]]
+// topo order = [0,1,2,3]
+
+// then we can maintain a reachable array:
+
+// reachable[3] = {}
+// reachable[2] = {3}
+// reachable[1] = {2,3}
+// reachable[0] = {1,2,3}
+
+
+
+// appraoch 3: dp approach
+// DP via Floyd–Warshall (Transitive Closure)
+
+// dp[i][j] = true if i is a prerequisite of j
+
+
+// https://leetcode.com/problems/course-schedule-iv/solutions/6333765/topological-sorting-bitset-with-explanation-100-beats/
+
+
+// bitset is a fixed-size array of bits (0s and 1s) — like a super memory-efficient version of vector<bool>.
+// Each bit represents true/false, but stored as a single bit, not a full byte.
+
+// bitset<100>
+// “Make a fixed-size array of 100 bits (0–99).”
+
+// So, bitset<100> can represent up to 100 possible courses (or nodes).
+
+
+// We need to store — for each course i — which other courses are reachable from it.
+// So you can make an array of bitsets:
+
+// vector<bitset<100>> reach(n);
+
+
+// reach[i][j] = 1 means: “course i is a prerequisite (directly or indirectly) of course j”.
