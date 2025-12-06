@@ -1,0 +1,62 @@
+class Solution {
+public:
+    void dfs(unordered_map<int,vector<int>>& mp,int cur,set<int>& visited,vector<int>& ans)
+    {
+        if(visited.find(cur)!=visited.end()) return;
+        ans.push_back(cur);
+        visited.insert(cur);
+        for(int x:mp[cur]){
+            dfs(mp,x,visited,ans);
+        }
+    }
+    vector<int> restoreArray(vector<vector<int>>& adjacentPairs) {
+        unordered_map<int,vector<int>>mp;
+        for(auto arr:adjacentPairs){
+            mp[arr[0]].push_back(arr[1]);
+            mp[arr[1]].push_back(arr[0]);
+        }
+        int head=0;
+        for(auto x:mp){
+            if(x.second.size()==1){
+                head=x.first;
+                break;
+            }
+        }
+        set<int>visited;
+        vector<int> ans;
+        dfs(mp,head,visited,ans);
+        return ans;
+    }
+};
+
+
+
+// How we think about a solution
+// Look at this.
+
+// [1,2,3,4]
+// Simply, edge of numbers(= 1,4) have one adjacent number and inside of the array(= 2,3) have two adjacent numbers.
+
+// So, the numbers that have one adjacent number should be start number or end number. But we don't have care about start number or end number because the description says "If there are multiple solutions, return any of them". That means we can return [1,2,3,4] or [4,3,2,1].
+
+
+// The next question is how you know adjacent number of each number.
+
+// My answer is simply to create adjacent candidate list.
+
+
+// {2: [1, 3], 1: [2], 3: [4, 2], 4: [3]}
+
+// 2: [1, 3]
+// → 1 from [2:1], 3 from [3,2]
+
+// 1: [2]
+// → 2 from [2,1]
+
+// 3: [4, 2]
+// → 4 from [3,4], 2 from [3,2]
+
+// 4: [3]
+// → 3 from [3,4]
+
+// values are adjacent candidate numbers of the key number
