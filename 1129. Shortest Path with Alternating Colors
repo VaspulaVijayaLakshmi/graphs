@@ -1,0 +1,77 @@
+1129. Shortest Path with Alternating Colors
+
+class Solution {
+public:
+    vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& redEdges, vector<vector<int>>& blueEdges) {
+        
+        vector<vector<pair<int,int>>> adj(n);
+
+        for(auto &e : redEdges)
+            adj[e[0]].push_back({e[1], 0}); // RED = 0
+        
+        for(auto &e : blueEdges)
+            adj[e[0]].push_back({e[1], 1}); // BLUE = 1
+
+        vector<vector<int>> dist(n, vector<int>(2, INT_MAX));
+        queue<pair<int,int>> q; // node, lastColor
+        
+        q.push({0, -1});
+        dist[0][0] = dist[0][1] = 0;
+
+        while(!q.empty()){
+            auto [node, prevColor] = q.front();
+            q.pop();
+
+            int curDist = (prevColor == -1 ? 0 : dist[node][prevColor]);
+
+            for(auto &child : adj[node]){
+
+                int nxt = child.first;
+                int edgeColor = child.second;
+
+                if(edgeColor != prevColor && dist[nxt][edgeColor] > curDist + 1){
+                    dist[nxt][edgeColor] = curDist + 1;
+                    q.push({nxt, edgeColor});
+                }
+            }
+        }
+
+        vector<int> ans(n);
+        for(int i = 0; i < n; i++){
+            int mn = min(dist[i][0], dist[i][1]);
+            ans[i] = (mn == INT_MAX ? -1 : mn);
+        }
+
+        return ans;
+    }
+};
+
+
+
+// Just using dis[cnode] == -1 is WRONG for this problem.
+// Why? Because reaching same node with different last-color states are NOT the same.
+
+// Example:
+// You reach node 3 via RED in 3 steps.
+// You reach node 3 via BLUE in 5 steps.
+
+// The problem considers these two different states because next allowed edge depends on color.
+
+// Reaching a node through RED and reaching the same node through BLUE lead to different future possibilities.
+
+// Because:
+
+// If you reached with RED, next must be BLUE.
+
+// If you reached with BLUE, next must be RED.
+
+// So the state is (node, lastColor), not just (node).
+
+// That's why simple dis[node] fails.
+// You need:
+
+// dist[node][0] — shortest path reaching node via RED
+
+// dist[node][1] — shortest path reaching node via BLUE
+
+// Final for each node, answer = min(dist[node][0], dist[node][1]).
