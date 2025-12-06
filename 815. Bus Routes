@@ -1,0 +1,78 @@
+class Solution {
+public:
+    int numBusesToDestination(vector<vector<int>>& routes, int source, int target) {
+        if(source==target)return 0;
+        unordered_map<int,vector<int>> stopToRoutes;
+        for(int i=0; i<routes.size(); i++){
+            for(int stop : routes[i]){
+                stopToRoutes[stop].push_back(i);
+            }
+        }
+
+        
+        vector<int> visitedRoute(routes.size(), 0);
+        queue<int> q;
+        q.push(source);
+        int buses = 0;
+
+        while(!q.empty()){
+            int size = q.size();
+            while(size--){
+                int stop = q.front(); q.pop();
+                if(stop == target) return buses;
+                for(int i : stopToRoutes[stop]){
+                    if(visitedRoute[i]) continue;
+                    visitedRoute[i] = 1;
+                    for(int nextStop : routes[i]){
+                        q.push(nextStop);
+                    }
+                }
+            }
+            buses++;
+        }
+        return -1;
+    }
+};
+
+// 1->2->7
+
+// 3->6->7
+
+// target=1
+// target=6
+
+// 1->2->7 
+//3->6
+
+
+// routes = [[7,12],[4,5,15],[6],[15,19],[9,12,13]]
+
+// src - 15 
+// tgt - 12
+
+
+
+
+
+
+// Build a map stopToBuses from each stop to the list of buses serving it.
+
+// Initialize a queue with the source stop, mark it visited.
+
+// BFS loop:
+
+// Increment busesTaken at each level.
+// For each stop in the current level:
+// For each bus serving that stop:
+// If bus not visited, mark it visited.
+// For each stop on that bus:
+// If stop == target → return busesTaken.
+// If stop not visited, enqueue it.
+// If BFS finishes without reaching target, return -1.
+
+
+
+
+//  Graph construction: map each stop to buses that serve it.
+// BFS traversal: each level = one bus taken.
+//  Visited sets: track visited stops and buses to avoid cycles.
