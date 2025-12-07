@@ -1,0 +1,159 @@
+class UnionFind {
+public:
+    UnionFind(int n) {
+
+        rank = vector<int>(n, 1);
+        f.resize(n);
+        for (int i = 0; i < n; ++i) f[i] = i;
+    }
+    
+    int Find(int x) {
+        if (x == f[x]) return x;
+        else return f[x] = Find(f[x]);
+    }
+    
+    void Union(int x, int y) {
+        int fx = Find(x), fy = Find(y);
+        if (fx == fy) return;
+        if (rank[fx] > rank[fy]) swap(fx, fy);
+        f[fx] = fy;
+        if (rank[fx] == rank[fy]) rank[fy]++;
+    }
+
+    private:
+      vector<int> f, rank;
+    
+};
+
+class Solution {
+public:
+
+    vector<vector<int>> findCriticalAndPseudoCriticalEdges(int n, vector<vector<int>>& edges) {
+
+        for (int i = 0; i < edges.size(); ++i) {
+            edges[i].push_back(i);
+        }
+
+        sort(edges.begin(), edges.end(), [](const vector<int>& a, const vector<int>& b) {
+            return a[2] < b[2];
+        });
+
+
+        int origin_mst = GetMST(n, edges, -1);
+
+        vector<int> critical, non_critical;
+
+        for (int i = 0; i < edges.size(); ++i) {
+
+            if (origin_mst < GetMST(n, edges, i)) {
+                critical.push_back(edges[i][3]);
+            } 
+            
+            else if (origin_mst == GetMST(n, edges, -1, i)) {
+                non_critical.push_back(edges[i][3]);
+            }
+        }
+        return {critical, non_critical};
+
+    }
+    
+private:
+
+//block edge - dont include this edge
+//force edge - preedge - this needs to be added
+
+    int GetMST(const int n, const vector<vector<int>>& edges, int blockedge, int pre_edge = -1) {
+
+
+        UnionFind uf(n);
+        int weight = 0;
+
+        if (pre_edge != -1) {
+            weight += edges[pre_edge][2];
+            uf.Union(edges[pre_edge][0], edges[pre_edge][1]);
+        }
+
+
+        for (int i = 0; i < edges.size(); ++i) {
+
+            if (i == blockedge) continue;
+
+            const auto& edge = edges[i];
+
+            //if they belong to same parent already.
+            if (uf.Find(edge[0]) == uf.Find(edge[1])) continue;
+
+            uf.Union(edge[0], edge[1]);
+
+
+            weight += edge[2];
+       
+        }
+
+        for (int i = 0; i < n; ++i) {
+            if (uf.Find(i) != uf.Find(0)) return 1e9+7;
+        }
+
+
+        return weight;
+    }
+};
+
+
+// Intuition
+
+// In a connected undirected graph, there can be multiple Minimum Spanning Trees (MSTs) with the same total cost.
+// The problem asks us to classify edges into two types:
+
+
+// Critical edges — must appear in all MSTs (removing it increases total MST weight).
+
+// Pseudo-critical edges — can appear in some MSTs (forcing it into MST still gives the same total weight).
+
+
+// This classification directly relates to how MST algorithms (like Kruskal’s) behave when certain edges are excluded or included.
+
+
+
+// Approach
+// We can use Kruskal’s algorithm with a Disjoint Set Union (DSU) to simulate two scenarios for every edge:
+
+// Step 1. Preprocessing:
+
+// Store all edges as (weight, u, v, index).
+// Sort them by weight.
+// Compute the MST cost once (base_w) as the reference.
+
+
+// Step 2. For each edge e:
+
+// Exclusion Test — Run Kruskal without this edge.
+// If the resulting MST is heavier or cannot connect all nodes →
+//  this edge is critical.
+
+
+
+// Inclusion Test — Run Kruskal but force include this edge first.
+// If the total MST weight is the same as the baseline →
+//  this edge is pseudo.
+
+
+
+// Why this works
+// Critical edges are essential to connectivity — removing them breaks the MST.
+// Pseudo-critical edges are optional but still optimal — they can appear in another valid MST.
+
+
+
+// for (int i = 0; i < n; ++i) {
+//     if (uf.Find(i) != uf.Find(0)) return 1e9+7;
+// }
+
+
+// uf.Find(0) gives the parent of node 0.
+
+// If MST is valid, all nodes must have the same parent.
+
+// If any node i has a different parent → disconnected → MST was not possible with the current constraint (because you blocked some edge).
+
+// So return a very large number (1e9+7) to signal this MST is invalid / infinite cost.
