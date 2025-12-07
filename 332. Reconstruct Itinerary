@@ -1,0 +1,27 @@
+class Solution {
+public:
+    unordered_map<string, multiset<string>> adj;
+    vector<string> result;
+
+    void dfs(const string& src) {
+        while (!adj[src].empty()) {
+            auto it = adj[src].begin();  // smallest lexicographic airport
+            string next = *it;
+            adj[src].erase(it);
+            dfs(next);
+        }
+        result.push_back(src);
+    }
+
+    vector<string> findItinerary(vector<vector<string>>& tickets) {
+        
+        // Build graph
+        for (auto& t : tickets) {
+            adj[t[0]].insert(t[1]);
+        }
+
+        dfs("JFK");
+        reverse(result.begin(), result.end());
+        return result;
+    }
+};
