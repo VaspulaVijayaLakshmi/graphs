@@ -1,0 +1,70 @@
+class Solution {
+public:
+    vector<int> countOfPairs(int n, int x, int y) {
+        vector<vector<int>> grid(n+1, vector<int>(n+1, 1000));
+        
+        for(int j = 1; j < n; j++) {
+            grid[j][j+1] = 1;
+            grid[j+1][j] = 1;
+        }
+        grid[x][y] = 1;
+        grid[y][x] = 1;
+        
+        for(int k = 1; k <= n; k++) {
+            for(int i = 1; i <= n; i++) {
+                for(int j = 1; j <= n; j++) {              
+                   grid[i][j] = min(grid[i][j], grid[i][k] + grid[k][j]);                
+                }
+            }
+        }
+        
+        vector<int> result(n);
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= n; j++) {
+
+                if(i != j) {
+                    int val = grid[i][j];
+                    result[val-1]++;
+                }
+
+            }
+        }
+        
+        return result;
+        
+    }
+};
+
+
+// when they say minimum streets
+
+// - BFS
+// - Digstra
+// - FLyod Warshall
+
+
+// - FOr each node we need to run BFS
+// - to cqlcuate the number of nodes at distance K
+
+// Eg: n= 1
+
+// means 1, 2,3
+
+// SO for each node DO BFS
+
+
+// _____
+
+
+// so this is like ALL node SHortest Paths
+
+// Flyodd Warshall
+
+// Build the adjacecny matrix
+// FLyodd Warshall 
+// Then iterate through the array and see 
+// And Do Flyodd Warshall.
+
+// and iterate through the matrix and then 
+
+
