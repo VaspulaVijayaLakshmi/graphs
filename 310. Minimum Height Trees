@@ -13,15 +13,21 @@ public:
             degree[v]++;
         }
         
+
+
         std::queue<int> leaves;
         for (int i = 0; i < n; ++i) {
             if (degree[i] == 1) leaves.push(i);
         }
         
         int remainingNodes = n;
+
+
         while (remainingNodes > 2) {
+
             int leavesCount = leaves.size();
             remainingNodes -= leavesCount;
+            
             for (int i = 0; i < leavesCount; ++i) {
                 int leaf = leaves.front();
                 leaves.pop();
@@ -42,3 +48,39 @@ public:
         return result;
     }
 };
+
+
+//we need to find the mid points.
+//mid points can be one or two.
+
+
+// because if we make the leaves or next to leaves as root, then length would be greater.
+
+// for the minimum heights , root should be as closes to root.
+
+// for even length -edges- > 2 roots
+// for odd length - 1 root.
+
+
+
+
+
+// How to find leaves..and How to find root.
+
+// Leaves are the nodes tht have indegree 1
+// and leaves to next nodes will have indegree 2
+
+// this goes on..
+
+// so something like toposort logic we can use...
+
+// but indegree if it becomes one if after removing leaf, then
+// consider that.
+
+// repear this until there are 2 node remaining....
+
+// so we need to keep track of processd nodes as well.
+
+
+
+
