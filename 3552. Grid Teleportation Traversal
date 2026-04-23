@@ -1,0 +1,81 @@
+3552. Grid Teleportation Traversal
+
+class Solution {
+public:
+    int minMoves(vector<string>& matrix) 
+    {
+        vector<vector<pair<int,int>>> v(26);
+        int m=matrix.size(),n=matrix[0].length();
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(matrix[i][j]!='.' and matrix[i][j]!='#') 
+                {
+                    v[matrix[i][j]-'A'].push_back({i,j});
+                }
+            }
+        }
+        queue<pair<pair<int,int>,int>> pq;
+        vector<vector<bool>> vis(m,vector<bool>(n,0));
+        vis[0][0]=1;
+        if(matrix[0][0]=='.') pq.push({{0,0,},0});
+        else 
+        {
+            int idx=matrix[0][0]-'A';
+            for(auto j:v[idx])
+            {
+                vis[j.first][j.second]=1;
+                pq.push({{j},0});
+            }
+        }
+        vector<vector<int>> dir={{0,-1},{-1,0},{1,0},{0,1}};
+        while(!pq.empty())
+        {
+            int i=pq.front().first.first,j=pq.front().first.second,cost=pq.front().second;
+            pq.pop();
+            if(i==m-1 and j==n-1) return cost;
+            for(int k=0;k<4;k++)
+            {
+                int ni=i+dir[k][0],nj=j+dir[k][1];
+                if(ni>=0 and ni<m and nj>=0 and nj<n and !vis[ni][nj] and matrix[ni][nj]!='#')
+                {
+                    vis[ni][nj]=1;
+                    if(matrix[ni][nj]=='.') pq.push({{ni,nj},cost+1});
+                    else
+                    {
+                        int idx=matrix[ni][nj]-'A';
+                        for(auto j:v[idx])
+                        {
+                            pq.push({{j},cost+1});
+                            vis[j.first][j.second]=1;
+                        }
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+};
+
+
+// BFS kind of prblm
+
+// also we can teleport to adj cells containing the same letter
+// given he havent used it before
+// once we use tht word we will put it in a set 
+
+
+// now do bfs 
+
+// put (0,0) in queue
+// if adj is a  letter  or dot put it in queue
+
+// if its same letter && dint been used before
+// dojt have to count this step
+
+// and reach the final grid
+
+
+
+// https://leetcode.com/problems/grid-teleportation-traversal/solutions/6755169/teleport-your-way-through-the-grid-bfs-w-9q28/
